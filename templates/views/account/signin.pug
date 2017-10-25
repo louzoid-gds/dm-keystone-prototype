@@ -1,0 +1,20 @@
+extends ../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		.row: .col-sm-12
+			h1 Sign in
+			.row
+				.col-sm-6
+					form(method='post', action='/account/signin', role='signin', novalidate).auth-form
+						input(type='hidden', name='action', value='signin')
+						input(type='hidden', name='target', value=form.target)
+						.form-groups
+							.form-group
+								label(for='signin-email').sr-only Email
+								input(type='email', name='email', placeholder='Email', id='signin-email', value=locals.form ? locals.form.email : null).form-control.form-control--first
+							.form-group
+								label(for='signin-password').sr-only Password
+								input(type='password', name='password', placeholder='Password', id='signin-password', value='').form-control.form-control--last
+						button(type='submit').btn.btn-block.btn-primary.btn-submit Sign in

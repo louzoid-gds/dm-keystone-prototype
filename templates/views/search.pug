@@ -1,0 +1,32 @@
+extends ../layouts/default
+
+block content
+
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'Catalogue', url: '/catalogue'}]
+			if (locals.category.parentCategory)
+				items.push({ name: locals.category.parentCategory.name, url: '/catalogue/' + locals.category.parentCategory.id})
+			if (locals.category)
+				items.push({ name: locals.category.name })			
+		+breadcrumb(items)
+
+		.row
+			.col-sm-12
+				h1= locals.category.name
+				p.lead!=locals.category.description.html
+
+		.row
+			.col-sm-4
+				.well.well-sm
+					p filters here
+			.col-sm-8
+				h2 #{locals.products.length} 
+					small results found in 
+						strong #{locals.category.name}
+				hr
+				each pro in locals.products
+					h3= pro.name
+					p Supplier name here
+					p!= pro.shortDescription
+					hr
