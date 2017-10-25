@@ -18,7 +18,8 @@ ProductType.add({
 	isListable: { type: Types.Boolean, initial: true },
 	isOpenToCompetition: { type: Types.Boolean, initial: true },
 	createdAt: { type: Date, default: Date.now, noedit: true },
-	attributes: { type: Types.Relationship, ref: 'ProductTypeAttribute', many: true }
+	attributes: { type: Types.Relationship, ref: 'ProductTypeAttribute', many: true },
+	opportunityAttributes: { type: Types.Relationship, ref: 'ProductTypeOpportunityAttribute', many: true }
 });
 
 ProductType.defaultSort = '-name';

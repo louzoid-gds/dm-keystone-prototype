@@ -2,18 +2,18 @@ var keystone = require('keystone');
 var Types = keystone.Field.Types;
 
 /**
- * ProductTypeAttribute Model
- * Field type !
+ * ProductTypeOpportunityAttribute Model
+ * Field type for opportunities !
  * =============
  */
 
-var ProductTypeAttribute = new keystone.List('ProductTypeAttribute', {
+var ProductTypeOpportunityAttribute = new keystone.List('ProductTypeOpportunityAttribute', {
 	nocreate: false,
 	noedit: false,
 	map: { name: 'label' }
 });
 
-ProductTypeAttribute.add({
+ProductTypeOpportunityAttribute.add({
 	label: { type: Types.Text, required: true, initial: true },
 	questionType: { type: Types.Select, required: true, initial: true, options: [
 		{ value: 'text', label: 'Textbox' },
@@ -25,6 +25,6 @@ ProductTypeAttribute.add({
 	createdAt: { type: Date, default: Date.now, noedit: true },
 });
 
-ProductTypeAttribute.defaultSort = '-name';
-ProductTypeAttribute.defaultColumns = 'label, questionType, createdAt';
-ProductTypeAttribute.register();
+ProductTypeOpportunityAttribute.defaultSort = '-name';
+ProductTypeOpportunityAttribute.defaultColumns = 'label, questionType, createdAt';
+ProductTypeOpportunityAttribute.register();
