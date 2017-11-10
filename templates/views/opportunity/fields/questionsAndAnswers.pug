@@ -1,0 +1,40 @@
+extends ../../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My Account', url: '/account/opportunities'}, 
+			{ name: 'My opportunity', url: '/opportunity/update/summary/' + locals.opportunity.id}, { name: 'Describe question and answer session'}]
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1 Describe question and answer session
+				br
+				small for #{locals.opportunity.title}
+			hr
+			.row
+				.col-sm-6
+					form(method='post', action='/opportunity/update/' + locals.opportunity.id + '/questionsAndAnswers', role='create')
+						input(type='hidden', name='action', value='update')
+						p You must give details of what type of session you want to hold, when it is and any details the attendees need.
+						p the type of session you want to run, eg webinar, phone conference or meeting the date and time of the session (this should happen within 1 week of publishing your requirements)
+						p Depending on the type of session you choose, you could also include:
+						ul
+							li software needed
+							li the url
+							li the phone number
+							li the access code
+							li the address (including postcode)
+							li anything else needed to take part
+						p This information will only be available to eligible suppliers who have logged in.
+						p You must post all questions and answers on the Digital Marketplace so all suppliers can see them.						
+						.form-group.padlarge
+							//- label Enter a summary of the work required
+							textarea(name='questionsAndAnswers').form-control
+								= locals.opportunity.questionsAndAnswers
+
+						p.padlarge
+							button(type='submit').btn.btn-block.btn-primary.btn-submit Update
+
+				

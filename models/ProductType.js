@@ -18,8 +18,9 @@ ProductType.add({
 	isListable: { type: Types.Boolean, initial: true },
 	isOpenToCompetition: { type: Types.Boolean, initial: true },
 	createdAt: { type: Date, default: Date.now, noedit: true },
-	attributes: { type: Types.Relationship, ref: 'ProductTypeAttribute', many: true },
-	opportunityAttributes: { type: Types.Relationship, ref: 'ProductTypeOpportunityAttribute', many: true }
+	attributes: { type: Types.Relationship, ref: 'Attribute', many: true, note: 'Properties for the service listing and search' },
+	// seeing as we're using Mongo, probably better off as a nested obj!  Oh well.
+	opportunityConfiguration: { type: Types.Relationship, ref: 'OpportunityConfiguration', dependsOn: { isOpenToCompetition: true } },
 });
 
 ProductType.defaultSort = '-name';

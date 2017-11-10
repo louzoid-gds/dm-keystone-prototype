@@ -3,26 +3,12 @@ extends ../../layouts/default
 block content
 	
 	.container-fluid: .content
-		.row: .col-sm-12
-			h1 Hello #{user.name.first} !
+		+breadcrumb([{ name: 'My account'},])
 			
 		.row
 			.col-sm-4: .well.well-lg
-				ul.nav.nav-pills.nav-stacked
-					li 
-						a() Account settings
-					li
-						em Buying options
-					li 
-						a() Saved searches
-					li 
-						a() Opportunities
-					li
-						em Selling options
-					li 
-						a() Opportunites I have applied for
-					li 
-						a() Framework applications
+				include _nav.pug
 		
 			.col-sm-8
+				h1 Hello #{user.name.first} !
 				p Dashboard and menu specific items here

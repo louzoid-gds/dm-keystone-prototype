@@ -1,0 +1,95 @@
+extends ../../layouts/default
+include ../../mixins/todoItem
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My Account', url: '/account/opportunities'}, 
+			{ name: 'My opportunity', url: '/opportunity/update/summary/' + locals.opportunity.id}, { name: 'Shortlist and evaluation process'}]
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1 Shortlist and evaluation process
+				br
+				small for #{locals.opportunity.title}
+			hr
+			.row
+				.col-sm-12.col-md-8
+					p There are 3 stages to finding the supplier that best meets your needs.
+					p You must tell suppliers how you’ll evaluate and assess them.
+
+				.col-sm-12.col-md-8.padlarge
+					//- basics
+					.panel.panel-default
+						.panel-heading Basics
+						//- .panel-body
+						ul.list-group
+							+todoItem({ required: true, done: locals.opportunity.noOfSuppliersToEvaluate, href: '/opportunity/update/' + locals.opportunity.id + '/noOfSuppliersToEvaluate', text: 'How may suppliers to evaluate' })
+							//- li.list-group-item Other attributes here - to do
+							+todoItem({ required: true, done: locals.opportunity.assessmentMethods.length > 0, href: '/opportunity/update/' + locals.opportunity.id + '/assessmentMethods', text: 'Assessment method(s)' })
+
+					- var evalCrit = locals.opportunity.configurationAtCreation.evaluationCriteria
+
+					.panel.panel-default
+						.panel-heading Evaluation weighting
+						if evalCrit && evalCrit.length > 0
+							.panel-body
+								.row
+									.col-sm-8
+										each ev in evalCrit
+											- var v = locals.evaluationCriteriaValues.find(o => o.evaluationCriteria == ev.id)
+											p #{ev.name}: #{v ? v.weighting : '0'}%
+									.col-sm-4
+										a(href='/opportunity/update/' + locals.opportunity.id + '/evaluationWeighting') Edit
+							
+						else 
+							ul.list-group
+								li.list-group-item
+									a(href='/opportunity/update/' + locals.opportunity.id + '/evaluationWeighting') Please complete
+						
+					//- evaluation criteria
+					each ev in evalCrit
+						if ev.childCriteria.length > 0
+							//- yes, should be mixin.
+							.panel.panel-default
+								.panel-heading= ev.name
+								.panel-body
+									each childEv in ev.childCriteria
+										p= childEv.name
+										- 
+											var v = locals.evaluationCriteriaValues.find(o => o.evaluationCriteria == childEv.id)
+										if v
+											.row
+												.col-sm-8
+													ul
+													each c in v.criteriaLines
+														li= c
+												.col-sm-4
+													p.padlarge
+														a(href='/opportunity/update/' + locals.opportunity.id + '/evaluationCriteria/' + childEv.id) Edit
+										else
+											p
+												a(href='/opportunity/update/' + locals.opportunity.id + '/evaluationCriteria/' + childEv.id) Please complete
+										hr
+
+						else if ev.canAddCriteriaLines
+							- 
+								var v = locals.evaluationCriteriaValues.find(o => o.evaluationCriteria == ev.id)
+							.panel.panel-default
+								.panel-heading= ev.name
+								.panel-body
+									if v && v.criteriaLines && v.criteriaLines.length > 0
+										.row
+											.col-sm-8
+												ul
+												each c in v.criteriaLines
+													li= c
+											.col-sm-4
+												p.padlarge
+													a(href='/opportunity/update/' + locals.opportunity.id + '/evaluationCriteria/' + ev.id) Edit
+									else
+										p 
+											a(href='/opportunity/update/' + locals.opportunity.id + '/evaluationCriteria/' + ev.id) Please complete
+					p
+						a(href='/opportunity/update/summary/' + locals.opportunity.id) Return to overview

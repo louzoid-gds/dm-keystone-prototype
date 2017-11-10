@@ -18,7 +18,7 @@ Category.add({
 	isHidden: { type: Types.Boolean, default: false },
 	//needs an ordering attribute too
 	parentCategory: { type: Types.Relationship, ref: 'Category' },
-	createdAt: { type: Date, default: Date.now, noedit: true }
+	createdAt: { type: Date, default: Date.now, noedit: true },
 });
 
 Category.defaultSort = '-name';

@@ -4,7 +4,7 @@ block content
 
 	.container-fluid: .content
 		- 
-			var items = [{ name: 'Catalogue', url: '/catalogue'}]
+			var items = [{ name: 'Service catalogue', url: '/catalogue'}]
 			if (locals.category.parentCategory)
 				items.push({ name: locals.category.parentCategory.name, url: '/catalogue/' + locals.category.parentCategory.id})
 			if (locals.category)

@@ -4,14 +4,14 @@ block content
 
 	.container-fluid: .content
 		- 
-			var items = [{ name: 'Catalogue', url: '/catalogue'}]
+			var items = [{ name: 'Service catalogue', url: '/catalogue'}]
 			if (locals.category)
 				items.push({ name: locals.category.name})
 		+breadcrumb(items)
 
 		.row
 			.col-sm-12
-				h1 Find stuff to buy
+				h1 Service catalogue
 				if locals.category
 					h2= locals.category.name
 

@@ -1,0 +1,42 @@
+extends ../../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My Account', url: '/account/opportunities'}, 
+			{ name: 'My opportunity', url: '/opportunity/update/summary/' + locals.opportunity.id}, 
+			{ name: 'Shortlist and evaluation process', url: '/opportunity/update/evaluationSummary/' + locals.opportunity.id}, 
+			{ name: locals.evaluationCriteria.name }]
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1= locals.evaluationCriteria.name
+				br
+				small  for #{locals.opportunity.title}
+			hr
+			.row
+				.col-sm-6
+					form(method='post', action='/opportunity/update/' + locals.opportunity.id + '/evaluationCriteria/' + locals.evaluationCriteria.id, role='create')
+						input(type='hidden', name='action', value='update')
+						p!= locals.evaluationCriteria.description.html
+
+						-
+							var values = locals.evaluationCriteriaValue ? locals.evaluationCriteriaValue.criteriaLines : {}
+							var min = locals.evaluationCriteria.minCriteriaLines
+							var lines = values ? (values.length > min ? values.length : min) : min
+							var i = 0
+
+						while i < lines
+							.form-group.padlarge(data-template-addrow)
+								.input-group
+									.input-group-addon= i+1
+									input(type='text', value=values[i], name='criteriaLines', required).form-control
+							- i++	
+						p
+							button(data-btnrole='addrow').btn.btn-sm.btn-default Add another
+
+						p
+							button(type='submit').btn.btn-block.btn-primary.btn-submit Update
+
+				

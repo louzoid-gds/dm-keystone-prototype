@@ -1,0 +1,36 @@
+extends ../../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My Account', url: '/account/opportunities'}, 
+			{ name: 'My opportunity', url: '/opportunity/update/summary/' + locals.opportunity.id}, 
+			{ name: 'Shortlist and evaluation process', url: '/opportunity/update/evaluationSummary/' + locals.opportunity.id}, 
+			{ name: 'Assessment methods'}]
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1 How you’ll assess suppliers
+			hr
+			.row
+				.col-sm-6
+					form(method='post', action='/opportunity/update/' + locals.opportunity.id + '/assessmentMethods', role='create')
+						input(type='hidden', name='action', value='update')
+						p You must ask all suppliers that reach the assessment stage for a written proposal.
+						p Choose additional ways to assess suppliers.
+						p You can only use the methods you choose here, eg if you don’t select a case study now, you won’t be able to ask for one later.
+						p Read about assessment methods.
+						br
+						each meth in locals.opportunity.configurationAtCreation.assessmentMethodsAvailable
+							.row
+								.col-sm-4
+									.checkbox
+										label
+											- var a = locals.opportunity.assessmentMethods.find(o => o == meth.id)
+											input(type='checkbox', name='assessmentMethods', value=meth.id, checked=(a ? "checked" : undefined))
+											= meth.name
+								.col-sm-8
+									p= meth.description
+							hr
+						button(type='submit').btn.btn-block.btn-primary.btn-submit.padlarge Update

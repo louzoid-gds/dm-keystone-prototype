@@ -1,0 +1,29 @@
+extends ../../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My Account', url: '/account/opportunities'}, 
+			{ name: 'My opportunity', url: '/opportunity/update/summary/' + locals.opportunity.id}, 
+			{ name: 'Shortlist and evaluation process', url: '/opportunity/update/evaluationSummary/' + locals.opportunity.id}, 
+			{ name: 'How many suppliers to evaluate'}]
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1 How many suppliers to evaluate
+			hr
+			.row
+				.col-sm-6
+					form(method='post', action='/opportunity/update/' + locals.opportunity.id + '/noOfSuppliersToEvaluate', role='create')
+						input(type='hidden', name='action', value='update')
+						input(type='hidden', name='redirectTo', value='evaluationSummary')
+						p You must evaluate at least 3 suppliers.
+						p Read about how many suppliers to evaluate.
+						.form-group
+							label No. of suppliers
+							input(type='text', value=locals.opportunity.noOfSuppliersToEvaluate, name='noOfSuppliersToEvaluate', required).form-control
+							
+						button(type='submit').btn.btn-block.btn-primary.btn-submit Update
+
+				

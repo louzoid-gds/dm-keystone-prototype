@@ -1,0 +1,27 @@
+extends ../../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My Account', url: '/account/opportunities'}, 
+			{ name: 'My opportunity', url: '/opportunity/update/summary/' + locals.opportunity.id}, { name: 'Summary of the work'}]
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1 Summary of the work 
+				small for #{locals.opportunity.title}
+			hr
+			.row
+				.col-sm-6
+					form(method='post', action='/opportunity/update/' + locals.opportunity.id + '/summaryOfWork', role='create')
+						input(type='hidden', name='action', value='update')
+						p This will appear on the supplier opportunities page on the Digital Marketplace. It will help suppliers decide whether or not to view your requirements.
+						.form-group.padlarge
+							label Enter a summary of the work required
+							textarea(name='summaryOfWork').form-control
+								= locals.opportunity.summaryOfWork
+
+						button(type='submit').btn.btn-block.btn-primary.btn-submit Update
+
+				

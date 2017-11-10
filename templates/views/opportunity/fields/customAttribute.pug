@@ -1,0 +1,36 @@
+extends ../../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My Account', url: '/account/opportunities'}, 
+			{ name: 'My opportunity', url: '/opportunity/update/summary/' + locals.opportunity.id}, 
+			{ name: 'Detailed requirements', url: '/opportunity/update/' + locals.opportunity.id + '/detailedRequirements'},
+			{ name: locals.attribute.label }]
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1= locals.attribute.label 
+				small  for #{locals.opportunity.title}
+			hr
+			.row
+				.col-sm-6
+					form(method='post', action='/opportunity/update/' + locals.opportunity.id + '/detailedRequirements/' + locals.attribute.id, role='create')
+						input(type='hidden', name='action', value='update')
+						p= locals.attribute.legend
+						.form-group.padlarge
+							label= locals.attribute.label
+							case locals.attribute.questionType
+								when 'text'
+									input(type='text', value=locals.attributeValue ? locals.attributeValue.value : '', name='value', locals.attribute.required ? required : '').form-control
+								when 'textArea'
+									textarea(name='value').form-control
+										if locals.attributeValue
+											= locals.attributeValue.value
+								when 'boolean'
+									p radios not implemented yet
+
+						button(type='submit').btn.btn-block.btn-primary.btn-submit Update
+
+				

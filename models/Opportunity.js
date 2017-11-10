@@ -10,23 +10,32 @@ var Types = keystone.Field.Types;
 var Opportunity = new keystone.List('Opportunity', {
 	nocreate: false,
 	noedit: false,
-	map: { name: 'title' }
+	map: { name: 'title' },
+	track: true,
 });
 
-Opportunity.add({
-	title: { type: Types.Text, required: true },
-	description: { type: Types.Markdown, required: false },
-	budgetRange: { type: Types.Text },
-	additionalTerms: { type: Types.Textarea },
-	noOfSuppliersToEvaluate: { type: Types.Number },
-	publishedAt: { type: Types.Date },
-	createdBy: { type: Types.Relationship, ref: 'User', index: true },
-	createdAt: { type: Date, default: Date.now, noedit: true }
-});
+Opportunity.add(
+	{
+		title: { type: Types.Text, required: true },
+		summaryOfWork: { type: Types.Textarea, required: false },
+		budgetRange: { type: Types.Textarea },
+		additionalTerms: { type: Types.Textarea },
+		questionsAndAnswers: { type: Types.Textarea },
+		publishedAt: { type: Types.Date },
+		productType: { type: Types.Relationship, ref: 'ProductType', filters: { isOpenToCompetition: true } },
+		configurationAtCreation: { type: Types.Relationship, ref: 'OpportunityConfiguration' },
+	},
+	{ heading: 'Evaluation criteria' },
+	{
+		noOfSuppliersToEvaluate: { type: Types.Number },
+		assessmentMethods: { type: Types.Relationship, ref: 'AssessmentMethod', many: true },
+	}
+);
 
 Opportunity.defaultSort = '-createdAt';
-Opportunity.defaultColumns = 'title, createdAt';
+Opportunity.defaultColumns = 'title, productType, configurationAtCreation, createdAt';
 
-//reference responses here
-Opportunity.relationship({ path: 'opportunityAttributes', ref: 'OpportunityProductTypeOpportunityAttributeValue', refPath: 'opportunity' });
+// reference responses here
+Opportunity.relationship({ path: 'attributes', ref: 'AttributeValue', refPath: 'opportunity' });
+Opportunity.relationship({ path: 'evaluationCriteria', ref: 'EvaluationCriteriaValue', refPath: 'opportunity' });
 Opportunity.register();

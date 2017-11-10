@@ -9,7 +9,7 @@ block content
 				.col-sm-6
 					form(method='post', action='/account/signin', role='signin', novalidate).auth-form
 						input(type='hidden', name='action', value='signin')
-						input(type='hidden', name='target', value=form.target)
+						input(type='hidden', name='target', value=locals.target)
 						.form-groups
 							.form-group
 								label(for='signin-email').sr-only Email

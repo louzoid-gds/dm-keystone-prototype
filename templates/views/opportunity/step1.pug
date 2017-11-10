@@ -1,0 +1,29 @@
+extends ../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'Opportunities', url: '/opportunity/search'}, { name: 'Create an opportunity', url: '/opportunity/create'}, { name: 'Step 1'}]
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1 Create an opportunity 
+				small= locals.productType.name
+			hr
+			.row
+				.col-sm-6
+					form(method='post', action='/opportunity/create/step1/' + locals.productType.id, role='create')
+						input(type='hidden', name='action', value='create-opp')
+						
+						.form-group
+							label Title
+							input(type='text', name='title', required).form-control
+
+						//- .form-group
+						//- 	label Description
+						//- 	textarea(name='description').form-control
+
+						button(type='submit').btn.btn-block.btn-primary.btn-submit Create opportunity
+
+				

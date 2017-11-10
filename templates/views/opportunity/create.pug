@@ -1,0 +1,35 @@
+extends ../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'Opportunities', url: '/opportunity/search'}, { name: 'Create an opportunity'}]
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1 Create an opportunity
+			.row
+				//- .col-sm-6
+					//- form(method='post', action='/opportunity/create', role='create', novalidate)
+					//- 	input(type='hidden', name='action', value='create')
+						
+					//- 	.form-group
+					//- 		label What do you need?
+					//- 		select.form-control
+					//- 			each pt in productTypesToList
+					//- 				option(value=pt.id) 
+					//- 					= pt.name
+
+					//- 	button(type='submit').btn.btn-block.btn-primary.btn-submit Get started
+
+				.col-sm-12
+					p You can create new opportunities in the following categories.  Only government organisations can create opportunitues
+	
+					.row.padlarge
+						each pt in productTypesToList
+							.col-sm-6
+								.well.well-lg
+									a(href='/opportunity/create/step1/' + pt.id)
+										h3= pt.name
+									p!= pt.description.html

@@ -1,0 +1,28 @@
+extends ../../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My Account', url: '/account/opportunities'}, 
+			{ name: 'My opportunity', url: '/opportunity/update/summary/' + locals.opportunity.id}, { name: 'Additional terms and conditions'}]
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1 Additional terms and conditions 
+				small for #{locals.opportunity.title}
+			hr
+			.row
+				.col-sm-6
+					form(method='post', action='/opportunity/update/' + locals.opportunity.id + '/additionalTerms', role='create')
+						input(type='hidden', name='action', value='update')
+						p You should use the standard contract unless your organisation needs to include additional terms and conditions.
+						p Read about how the terms and conditions work.
+						.form-group.padlarge
+							label Additional terms and conditions
+							textarea(name='additionalTerms').form-control
+								= locals.opportunity.additionalTerms
+
+						button(type='submit').btn.btn-block.btn-primary.btn-submit Update
+
+				

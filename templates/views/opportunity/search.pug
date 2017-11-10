@@ -1,0 +1,30 @@
+extends ../../layouts/default
+
+block content
+
+	.container-fluid: .content
+		+breadcrumb([{ name: 'Opportunities' }])
+
+		.row
+			.col-sm-12
+				h1 Opportunities
+				p
+					a(href='/opportunity/create') Create an opportunity
+				//- h1= locals.category.name
+				//- p.lead!=locals.category.description.html
+
+		.row
+			.col-sm-4
+				.well.well-sm
+					p filters here
+			.col-sm-8
+				h2 #{locals.opportunities.length} 
+					small opportunities found
+					//- 	strong #{locals.category.name}
+				hr
+				each opp in locals.opportunities 
+					a(href='/opportunity/' + opp.id) 
+						h3= opp.title
+					p Organisation name here
+					p!= opp.summaryOfWork
+					hr

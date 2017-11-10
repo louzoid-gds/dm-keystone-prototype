@@ -1,0 +1,35 @@
+extends ../../layouts/default
+include ../../mixins/todoItem
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My Account', url: '/account/opportunities'}, 
+			{ name: 'My opportunity', url: '/opportunity/update/summary/' + locals.opportunity.id}, { name: 'Detailed requirements'}]
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1 Detailed requirements 
+				small for #{locals.opportunity.title}
+			hr
+			.row
+				.col-sm-12.col-md-8
+					.panel.panel-default
+						.panel-body These requirements are specific to your need in the #{locals.opportunity.productType.name} category.
+
+						ul.list-group
+							each att in locals.opportunity.configurationAtCreation.detailedRequirements
+								- 
+									var v = locals.opportunityAttributeValues.find(o => o.attribute == att.id)
+									
+								li.list-group-item
+									if v
+										span.badge 
+											span.glyphicon.glyphicon-ok
+									else if !att.required
+										span.pull-right Optional
+									a(href='/opportunity/update/' + locals.opportunity.id + '/detailedRequirements/' + att.id)
+										= att.label
+					p
+						a(href='/opportunity/update/summary/' + locals.opportunity.id) Return to overview

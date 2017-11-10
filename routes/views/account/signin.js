@@ -9,8 +9,10 @@ exports = module.exports = function (req, res) {
 	var view = new keystone.View(req, res);
 	var locals = res.locals;
 
-	locals.section = 'session';
 	locals.form = req.body;
+	if (req.query.target) {
+		locals.target = req.query.target; // not cool but fine for proto
+	}
 
 	view.on('post', { action: 'signin' }, function (next) {
 		if (!req.body.email || !req.body.password) {

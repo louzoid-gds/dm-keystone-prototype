@@ -54,7 +54,7 @@ html
 							span.icon-bar
 							span.icon-bar
 							span.icon-bar
-						a.navbar-brand(href='/') DM prototype
+						a.navbar-brand(href='/') DM playground prototype
 					.collapse.navbar-collapse
 						ul.nav.navbar-nav.navbar-left
 							each link in navLinks
@@ -63,6 +63,8 @@ html
 							if user
 								if user.canAccessKeystone
 									li: a(href='/keystone') Open admin UI
+								else 
+									li: a(href='/account/me') My account
 								li: a(href='/account/signout') Sign Out
 							else
 								li: a(href='/account/signin') Sign In
@@ -111,4 +113,6 @@ html
 		//- Add scripts that are globally required by your site here.
 
 		//- Include template-specific javascript files by extending the js block
+		script(src='/js/site.js')
+
 		block js

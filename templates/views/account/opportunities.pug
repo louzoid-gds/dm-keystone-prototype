@@ -1,0 +1,19 @@
+extends ../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My account', url: '/account/me'}, { name: 'Opportunities'}]
+		+breadcrumb(items)
+			
+		.row
+			.col-sm-4: .well.well-lg
+				include _nav.pug
+		
+			.col-sm-8
+				each opp in locals.opportunities 
+					a(href='/opportunity/update/summary/' + opp.id) 
+						h3= opp.title
+					p Created at #{moment(opp.createdAt).format('DD/MM/YYYY')}
+					hr

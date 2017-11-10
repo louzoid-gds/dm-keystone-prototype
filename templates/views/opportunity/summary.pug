@@ -1,0 +1,46 @@
+extends ../../layouts/default
+include ../../mixins/todoItem
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My account', url: '/account/me'}, { name: 'My opportunity'}]
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1= locals.opportunity.title
+			h3= locals.opportunity.productType.name
+			hr
+			.row
+				.col-sm-12.col-md-8
+
+					.panel.panel-default
+						.panel-heading 1. Write requirements
+						.panel-body Before you can publish your requirements, you must complete:
+
+						ul.list-group
+							+todoItem({ required: true, done: locals.opportunity.title, href: '/opportunity/update/' + locals.opportunity.id + '/title', text: 'Title' })
+							+todoItem({ required: true, done: locals.opportunity.summaryOfWork, href: '/opportunity/update/' + locals.opportunity.id + '/summaryOfWork', text: 'Summary of the work' })
+							+todoItem({ required: false, done: locals.opportunity.budgetRange, href: '/opportunity/update/' + locals.opportunity.id + '/budgetRange', text: 'Budget range' })
+							+todoItem({ required: false, done: locals.opportunity.additionalTerms, href: '/opportunity/update/' + locals.opportunity.id + '/additionalTerms', text: 'Additional terms & conditions' })
+
+							li.list-group-item
+								a(href='/opportunity/update/' + locals.opportunity.id + '/detailedRequirements') Detailed requirements	
+
+									
+					.panel.panel-default
+						.panel-heading 2. Set how you will evaluate suppliers
+						.panel-body Before you can publish your requirements, you must complete:
+
+						ul.list-group
+							li.list-group-item 
+								a(href='/opportunity/update/evaluationSummary/' + locals.opportunity.id) Shortlist and evaluation process
+
+					.panel.panel-default
+						.panel-heading 3. Publish requirements
+						.panel-body Before you publish your requirements, let suppliers know how you will handle questions and answers
+
+						ul.list-group
+							+todoItem({ required: true, done: locals.opportunity.questionsAndAnswers, href: '/opportunity/update/' + locals.opportunity.id + '/questionsAndAnswers', text: 'Describe question and answer session' })
+							li.list-group-item.disabled Review and publish your requirements

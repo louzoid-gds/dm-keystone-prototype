@@ -1,0 +1,29 @@
+extends ../../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My Account', url: '/account/opportunities'}, 
+			{ name: 'My opportunity', url: '/opportunity/update/summary/' + locals.opportunity.id}, { name: 'Budget range'}]
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1 Budget range 
+				small for #{locals.opportunity.title}
+			hr
+			.row
+				.col-sm-6
+					form(method='post', action='/opportunity/update/' + locals.opportunity.id + '/budgetRange', role='create')
+						input(type='hidden', name='action', value='update')
+						p Include how much you can spend.  Suppliers will find it helpful if you can provide a breakdown of costs.
+						p You must have budget approval before you publish your requirements.
+						p You should talk to suppliers before you buy so you know how much the work might cost.
+						.form-group.padlarge
+							label Budget range
+							textarea(name='budgetRange').form-control
+								= locals.opportunity.budgetRange
+
+						button(type='submit').btn.btn-block.btn-primary.btn-submit Update
+
+				

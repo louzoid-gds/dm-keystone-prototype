@@ -1,0 +1,10 @@
+mixin todoItem(item)
+	//- (class=item.done ? "list-group-item-success" : "")
+	li.list-group-item 
+		if item.done
+			span.badge 
+				span.glyphicon.glyphicon-ok
+		else if !item.required
+			span.pull-right Optional
+		a(href=item.href)
+			=item.text			

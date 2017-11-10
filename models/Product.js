@@ -26,5 +26,5 @@ Product.add({
 Product.defaultSort = '-name';
 Product.defaultColumns = 'name, isLive, createdAt';
 
-Product.relationship({ path: 'attributes', ref: 'ProductProductTypeAttributeValue', refPath: 'product' });
+Product.relationship({ path: 'attributes', ref: 'AttributeValue', refPath: 'product' });
 Product.register();

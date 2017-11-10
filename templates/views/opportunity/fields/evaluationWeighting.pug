@@ -1,0 +1,46 @@
+extends ../../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My Account', url: '/account/opportunities'}, 
+			{ name: 'My opportunity', url: '/opportunity/update/summary/' + locals.opportunity.id}, 
+			{ name: 'Shortlist and evaluation process', url: '/opportunity/update/evaluationSummary/' + locals.opportunity.id}, 
+			{ name: 'Evaluation weighting' }]
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1 Evaluation weighting
+				br
+				small  for #{locals.opportunity.title}
+			hr
+			.row
+				.col-sm-6
+					form(method='post', action='/opportunity/update/' + locals.opportunity.id + '/evaluationWeighting', role='create')
+						input(type='hidden', name='action', value='update')
+						p Use the weightings to say how important each evaluation criteria is.
+						p Total must add up to 100%
+						
+						-
+							var weightings = locals.opportunity.configurationAtCreation.weightingParams
+							var i = -1
+
+						each ev in locals.opportunity.configurationAtCreation.evaluationCriteria
+							- 
+								i++
+								var v = locals.evaluationCriteriaValues.find(o => o.evaluationCriteria == ev.id)
+								var w = weightings[i].split('-')
+
+							h3= ev.name
+							p!= ev.descriptionForWeighting.html
+
+							.form-group
+								label This can be between #{w[0]}% and #{w[1]}%
+								input(type='text', value=(v ? v.weighting : ''), name=ev.id+'-weighting', required).form-control
+
+
+						p.padlarge
+							button(type='submit').btn.btn-block.btn-primary.btn-submit Update
+
+				
