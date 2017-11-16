@@ -26,6 +26,9 @@ block content
 							+todoItem({ required: false, done: locals.opportunity.additionalTerms, href: '/opportunity/update/' + locals.opportunity.id + '/additionalTerms', text: 'Additional terms & conditions' })
 
 							li.list-group-item
+								if locals.incompleteAttributes.length <= 0
+									span.badge 
+											span.glyphicon.glyphicon-ok
 								a(href='/opportunity/update/' + locals.opportunity.id + '/detailedRequirements') Detailed requirements	
 
 									
@@ -42,5 +45,14 @@ block content
 						.panel-body Before you publish your requirements, let suppliers know how you will handle questions and answers
 
 						ul.list-group
+							- 
+								var openOptions = locals.opportunity.configurationAtCreation.howLongOpenForOptions;
+							if openOptions && openOptions.length > 0
+								li.list-group-item
+									if locals.opportunity.howLongOpenFor
+										span.badge 
+											span.glyphicon.glyphicon-ok
+									a(href='/opportunity/update/' + locals.opportunity.id + '/howLongOpenFor') Set how long your requirements will be open for
+
 							+todoItem({ required: true, done: locals.opportunity.questionsAndAnswers, href: '/opportunity/update/' + locals.opportunity.id + '/questionsAndAnswers', text: 'Describe question and answer session' })
 							li.list-group-item.disabled Review and publish your requirements

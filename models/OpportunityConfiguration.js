@@ -17,7 +17,7 @@ OpportunityConfiguration.add(
 	{
 		name: { type: Types.Text, required: true, initial: true },
 		detailedRequirements: { type: Types.Relationship, ref: 'Attribute', filters: { usage: 'opportunityField' }, many: true },
-		howLongOpenForOptions: { type: Types.NumberArray, note: 'Enter options in days for how long the opp should be open for.  E.g. Enter 7 for 1 week.  If no options are specified, the default is 14 (2 weeks)' }
+		howLongOpenForOptions: { type: Types.NumberArray, note: 'Enter options in days for how long the opp should be open for.  E.g. Enter 7 for 1 week.  If no options are specified, the default is 14 (2 weeks)' },
 	},
 	// header object
 	{ heading: 'Evaluation criteria' },

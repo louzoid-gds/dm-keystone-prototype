@@ -15,7 +15,7 @@ exports = module.exports = function (req, res) {
 
 	view.on('init', function (next) {
 		Opportunity.model.findOne()
-			.where('_id', locals.filters.opportunity)
+			.where('_id', locals.filters.opportunity).populate('configurationAtCreation')
 			.exec(function (err, opp) {
 				if (err) return res.err(err);
 				if (!opp) return res.notfound('Opportunity not found');

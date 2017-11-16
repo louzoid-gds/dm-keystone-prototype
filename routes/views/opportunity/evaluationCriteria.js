@@ -1,6 +1,6 @@
 var keystone = require('keystone');
 var Opportunity = keystone.list('Opportunity');
-var EvaluationCriteria= keystone.list('EvaluationCriteria');
+var EvaluationCriteria = keystone.list('EvaluationCriteria');
 var EvaluationCriteriaValue = keystone.list('EvaluationCriteriaValue');
 
 exports = module.exports = function (req, res) {
@@ -64,7 +64,6 @@ exports = module.exports = function (req, res) {
 
 		updater.process(req.body, {
 			flashErrors: true,
-			// fields: 'weighting, criteriaLines', // need custom error handling, this isn't going to cut it
 			fields: 'criteriaLines',
 			errorMessage: 'Something went wrong updating this field',
 		}, function (err) {

@@ -21,6 +21,7 @@ Opportunity.add(
 		budgetRange: { type: Types.Textarea },
 		additionalTerms: { type: Types.Textarea },
 		questionsAndAnswers: { type: Types.Textarea },
+		howLongOpenFor: { type: Types.Number }, // number of days
 		publishedAt: { type: Types.Date },
 		productType: { type: Types.Relationship, ref: 'ProductType', filters: { isOpenToCompetition: true } },
 		configurationAtCreation: { type: Types.Relationship, ref: 'OpportunityConfiguration' },

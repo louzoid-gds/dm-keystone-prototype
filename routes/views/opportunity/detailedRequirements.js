@@ -27,7 +27,7 @@ exports = module.exports = function (req, res) {
 	});
 
 	view.on('init', function (next) {
-		AttributeValue.model.find() // .populate('productTypeOpportunityAttribute')
+		AttributeValue.model.find()
 			.where('opportunity', locals.filters.opportunity)
 			.exec(function (err, oppValues) {
 				if (err) return res.err(err);
