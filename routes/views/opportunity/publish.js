@@ -1,7 +1,5 @@
 var keystone = require('keystone');
 var Opportunity = keystone.list('Opportunity');
-var AttributeValue = keystone.list('AttributeValue');
-
 exports = module.exports = function (req, res) {
 
 	if (!req.user) {
@@ -16,7 +14,7 @@ exports = module.exports = function (req, res) {
 
 	view.on('init', function (next) {
 		Opportunity.model.findOne()
-			.where('_id', locals.filters.opportunity).populate({ path: 'configurationAtCreation', populate: { path: 'detailedRequirements' } })
+			.where('_id', locals.filters.opportunity)
 			.exec(function (err, opp) {
 				if (err) return res.err(err);
 				if (!opp) return res.notfound('Opportunity not found');
@@ -27,16 +25,18 @@ exports = module.exports = function (req, res) {
 			});
 	});
 
-	view.on('init', function (next) {
-		AttributeValue.model.find()
-			.where('opportunity', locals.filters.opportunity)
-			.exec(function (err, oppValues) {
-				if (err) return res.err(err);
+	view.on('post', { action: 'publish' }, function (next) {
 
-				locals.opportunityAttributeValues = oppValues;
-				next();
-			});
+		locals.opportunity.publish(function (err) {
+			if (err) {
+				locals.validationErrors = err; // should be checked first but hohum
+			}
+			else {
+				return res.redirect('/opportunity/update/summary/' + locals.opportunity.id);
+			}
+		});
+
 	});
 	// Render the view
-	view.render('opportunity/detailedRequirements');
+	view.render('opportunity/publish');
 };

@@ -1,0 +1,30 @@
+extends ../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My Account', url: '/account/opportunities'}, 
+			{ name: 'My opportunity', url: '/opportunity/update/summary/' + locals.opportunity.id}, { name: 'Publish your requirements and evaluation criteria'}]
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1 Publish your requirements and evaluation criteria
+				br
+				small for #{locals.opportunity.title}
+			hr
+			.row
+				.col-sm-6
+					form(method='post', action='/opportunity/update/publish/' + locals.opportunity.id, role='create')
+						input(type='hidden', name='action', value='publish')
+						p All requirements are published on the Digital Marketplace where anyone can see them.
+						p Your requirements will be open for #{locals.opportunity.howLongOpenFor/7} week.
+						//- p If you publish your requirements today (16 November), suppliers will be able to apply until Thursday 23 November 2017 at 11:59pm GMT.
+						p Supplier questions will be sent to:
+						p= user.email
+						p Make sure this email address will be monitored. If you’re away while suppliers can still ask questions, you should make sure your emails are forwarded to a colleague.
+
+						p.padlarge
+							button(type='submit').btn.btn-block.btn-primary.btn-submit Publish requirements
+
+				

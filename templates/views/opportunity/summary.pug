@@ -11,48 +11,110 @@ block content
 		.row: .col-sm-12
 			h1= locals.opportunity.title
 			h3= locals.opportunity.productType.name
+			if locals.opportunity.isPublished
+				p.lead Published #{moment(locals.opportunity.publishedAt).format('DD/MM/YYYY')}.  Closing: #{moment(locals.opportunity.closesAt).format('DD/MM/YYYY')}
 			hr
 			.row
 				.col-sm-12.col-md-8
 
 					.panel.panel-default
 						.panel-heading 1. Write requirements
-						.panel-body Before you can publish your requirements, you must complete:
+							if locals.opportunity.isPublished
+								span.badge.pull-right
+									span.glyphicon.glyphicon-ok
+						if !locals.opportunity.isPublished
+							.panel-body Before you can publish your requirements, you must complete:
 
-						ul.list-group
-							+todoItem({ required: true, done: locals.opportunity.title, href: '/opportunity/update/' + locals.opportunity.id + '/title', text: 'Title' })
-							+todoItem({ required: true, done: locals.opportunity.summaryOfWork, href: '/opportunity/update/' + locals.opportunity.id + '/summaryOfWork', text: 'Summary of the work' })
-							+todoItem({ required: false, done: locals.opportunity.budgetRange, href: '/opportunity/update/' + locals.opportunity.id + '/budgetRange', text: 'Budget range' })
-							+todoItem({ required: false, done: locals.opportunity.additionalTerms, href: '/opportunity/update/' + locals.opportunity.id + '/additionalTerms', text: 'Additional terms & conditions' })
+							ul.list-group
+								+todoItem({ required: true, done: locals.opportunity.title, href: '/opportunity/update/' + locals.opportunity.id + '/title', text: 'Title' })
+								+todoItem({ required: true, done: locals.opportunity.summaryOfWork, href: '/opportunity/update/' + locals.opportunity.id + '/summaryOfWork', text: 'Summary of the work' })
+								+todoItem({ required: false, done: locals.opportunity.budgetRange, href: '/opportunity/update/' + locals.opportunity.id + '/budgetRange', text: 'Budget range' })
+								+todoItem({ required: false, done: locals.opportunity.additionalTerms, href: '/opportunity/update/' + locals.opportunity.id + '/additionalTerms', text: 'Additional terms & conditions' })
 
-							li.list-group-item
-								if locals.incompleteAttributes.length <= 0
-									span.badge 
-											span.glyphicon.glyphicon-ok
-								a(href='/opportunity/update/' + locals.opportunity.id + '/detailedRequirements') Detailed requirements	
+								li.list-group-item
+									if locals.incompleteAttributes.length <= 0
+										span.badge 
+												span.glyphicon.glyphicon-ok
+									a(href='/opportunity/update/' + locals.opportunity.id + '/detailedRequirements') Detailed requirements	
 
-									
+										
 					.panel.panel-default
 						.panel-heading 2. Set how you will evaluate suppliers
-						.panel-body Before you can publish your requirements, you must complete:
+							if locals.opportunity.isPublished
+								span.badge.pull-right
+									span.glyphicon.glyphicon-ok
+						if !locals.opportunity.isPublished
+							.panel-body Before you can publish your requirements, you must complete:
 
-						ul.list-group
-							li.list-group-item 
-								a(href='/opportunity/update/evaluationSummary/' + locals.opportunity.id) Shortlist and evaluation process
+							ul.list-group
+								li.list-group-item
+									if locals.opportunity.evaluationBasicsComplete && locals.incompleteEvaluationCriteria.length <= 0
+										span.badge 
+												span.glyphicon.glyphicon-ok
+									a(href='/opportunity/update/evaluationSummary/' + locals.opportunity.id) Shortlist and evaluation process
 
 					.panel.panel-default
 						.panel-heading 3. Publish requirements
-						.panel-body Before you publish your requirements, let suppliers know how you will handle questions and answers
-
-						ul.list-group
-							- 
-								var openOptions = locals.opportunity.configurationAtCreation.howLongOpenForOptions;
-							if openOptions && openOptions.length > 0
+							if locals.opportunity.isPublished
+								span.badge.pull-right
+									span.glyphicon.glyphicon-ok
+						
+						if locals.opportunity.isPublished
+							.panel-body You've published your requirements
+							ul.list-group
 								li.list-group-item
-									if locals.opportunity.howLongOpenFor
-										span.badge 
-											span.glyphicon.glyphicon-ok
-									a(href='/opportunity/update/' + locals.opportunity.id + '/howLongOpenFor') Set how long your requirements will be open for
+									a(href='/opportunity/' + locals.opportunity.id) View your published opportunity/requirements
 
-							+todoItem({ required: true, done: locals.opportunity.questionsAndAnswers, href: '/opportunity/update/' + locals.opportunity.id + '/questionsAndAnswers', text: 'Describe question and answer session' })
-							li.list-group-item.disabled Review and publish your requirements
+						else
+							.panel-body Before you publish your requirements, let suppliers know how you will handle questions and answers
+
+							ul.list-group
+								- 
+									var openOptions = locals.opportunity.configurationAtCreation.howLongOpenForOptions;
+								if openOptions && openOptions.length > 0
+									li.list-group-item
+										if locals.opportunity.howLongOpenFor
+											span.badge 
+												span.glyphicon.glyphicon-ok
+										a(href='/opportunity/update/' + locals.opportunity.id + '/howLongOpenFor') Set how long your requirements will be open for
+
+								+todoItem({ required: false, done: locals.opportunity.questionsAndAnswers, href: '/opportunity/update/' + locals.opportunity.id + '/questionsAndAnswers', text: 'Describe question and answer session' })
+								li.list-group-item(class=locals.isReadyToPublish ? '': 'disabled') 
+									if locals.isReadyToPublish 
+										strong
+											a(href='/opportunity/update/publish/' + locals.opportunity.id) Review and publish your requirements
+									else
+										span Review and publish your requirements.
+										br 
+										span You'll be able to do this once you've completed the fields above
+
+					.panel.panel-default
+						.panel-heading 4. Answer supplier questions
+						.panel-body You must answer all questions by ?. Suppliers will send you questions by email.
+						ul.list-group
+							if locals.opportunity.isPublished
+								li.list-group-item
+									a(href='') Publish questions and answers
+							li.list-group-item
+								a(href='') How to answer supplier questions
+
+					.panel.panel-default
+						.panel-heading 5. Shortlist
+						.panel-body After the application deadline, shortlist the suppliers who applied.
+						ul.list-group
+							li.list-group-item
+								a(href='') How to shortlist suppliers
+
+					.panel.panel-default
+						.panel-heading 6. Evalute
+						.panel-body Evaluate your shortlist using the criteria and methods you published with your requirements.
+						ul.list-group
+							li.list-group-item
+								a(href='') How to evaluate suppliers
+
+					.panel.panel-default
+						.panel-heading 7. Award a contract
+						.panel-body You must give your chosen supplier a contract before they start work.
+						ul.list-group
+							li.list-group-item
+								a(href='') How to award a contract

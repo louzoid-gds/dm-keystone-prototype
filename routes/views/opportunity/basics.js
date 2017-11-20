@@ -21,6 +21,7 @@ exports = module.exports = function (req, res) {
 				if (!opp) return res.notfound('Opportunity not found');
 
 				locals.opportunity = opp;
+				if (req.user._id.toString() !== opp.createdBy.toString()) return res.redirect('/');
 				next();
 			});
 	});
@@ -44,7 +45,6 @@ exports = module.exports = function (req, res) {
 		});
 
 	});
-		
 	// Render the view
 	view.render('opportunity/fields/' + locals.filters.field);
 };

@@ -43,6 +43,7 @@ exports = module.exports = function (app) {
 	app.get('/opportunity/create', routes.views.opportunity.create);
 	app.all('/opportunity/create/step1/:opportunityType', routes.views.opportunity.step1);
 	app.all('/opportunity/update/summary/:opportunity', routes.views.opportunity.summary);
+	app.all('/opportunity/update/publish/:opportunity', routes.views.opportunity.publish);
 	app.get('/opportunity/update/evaluationSummary/:opportunity', routes.views.opportunity.evaluationSummary);
 	app.get('/opportunity/update/:opportunity/detailedRequirements', routes.views.opportunity.detailedRequirements);
 	app.all('/opportunity/update/:opportunity/detailedRequirements/:attribute', routes.views.opportunity.customAttribute);

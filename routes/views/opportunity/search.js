@@ -6,24 +6,12 @@ exports = module.exports = function (req, res) {
 	var view = new keystone.View(req, res);
 	var locals = res.locals;
 	locals.filters = {
-		cat: req.params.category
+		cat: req.params.category,
 	};
 
-	// view.on('init', function (next) {
-	// 	Category.model.findOne()
-	// 		.where('_id', locals.filters.cat)
-	// 		.populate('parentCategory')
-	// 		.exec(function (err, cat) {
-	// 			if (err) return res.err(err);
-	// 			if (!cat) return res.notfound('Category not found');
-
-	// 			locals.category = cat;
-	// 			next();
-	// 		});
-	// });
-
 	view.on('init', function (next) {
-		var q = Opportunity.model.find(); // .where('isPublished', true);
+		// can't query by virtual params which is fair enough
+		var q = Opportunity.model.find({ publishedAt: { $lt: Date.now() }, closesAt: { $gte: Date.now() } }); // .where('publishedAt', true);
 		if (locals.category) {
 			q.where('categories').in([locals.category]);
 		}

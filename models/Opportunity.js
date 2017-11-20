@@ -1,3 +1,4 @@
+var moment = require('moment');
 var keystone = require('keystone');
 var Types = keystone.Field.Types;
 
@@ -21,8 +22,9 @@ Opportunity.add(
 		budgetRange: { type: Types.Textarea },
 		additionalTerms: { type: Types.Textarea },
 		questionsAndAnswers: { type: Types.Textarea },
-		howLongOpenFor: { type: Types.Number }, // number of days
-		publishedAt: { type: Types.Date },
+		howLongOpenFor: { type: Types.Number, default: 14 }, // number of days
+		publishedAt: { type: Types.Datetime },
+		closesAt: { type: Types.Datetime },
 		productType: { type: Types.Relationship, ref: 'ProductType', filters: { isOpenToCompetition: true } },
 		configurationAtCreation: { type: Types.Relationship, ref: 'OpportunityConfiguration' },
 	},
@@ -33,8 +35,43 @@ Opportunity.add(
 	}
 );
 
+// virtuals
+Opportunity.schema.virtual('basicsComplete').get(function () {
+	return this.title !== '' && this.summaryOfWork !== '';
+});
+Opportunity.schema.virtual('evaluationBasicsComplete').get(function () {
+	return this.noOfSuppliersToEvaluate > 0; // && this.assessmentMethods;
+});
+Opportunity.schema.virtual('isPublished').get(function () {
+	var d = moment(this.publishedAt);
+	if (!d.isValid) return false;
+	return d.isBefore(Date.now());
+});
+Opportunity.schema.virtual('isClosed').get(function () {
+	var d = moment(this.closesAt);
+	if (!d.isValid) return false;
+	return d.isBefore(Date.now());
+});
+Opportunity.schema.virtual('isOpen').get(function () {
+	return this.isPublished && !this.isClosed;
+});
+
+// methods
+Opportunity.schema.methods.publish = function (callback) {
+	var opportunity = this;
+	if (opportunity.howLongOpenFor === '' || opportunity.howLongOpenFor === 0) {
+		opportunity.howLongOpenFor = 14; // config setting somewhere
+	}
+	opportunity.publishedAt = Date.now();
+	opportunity.closesAt = moment(Date.now()).add(this.howLongOpenFor, 'days'); // add howlongfor - how do we do that/
+	opportunity.save(function (err) {
+		if (err) return callback(err);
+		callback();
+	});
+};
+
 Opportunity.defaultSort = '-createdAt';
-Opportunity.defaultColumns = 'title, productType, configurationAtCreation, createdAt';
+Opportunity.defaultColumns = 'title, productType, configurationAtCreation, publishedAt, closesAt, createdAt';
 
 // reference responses here
 Opportunity.relationship({ path: 'attributes', ref: 'AttributeValue', refPath: 'opportunity' });

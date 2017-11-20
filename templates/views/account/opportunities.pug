@@ -12,8 +12,36 @@ block content
 				include _nav.pug
 		
 			.col-sm-8
-				each opp in locals.opportunities 
-					a(href='/opportunity/update/summary/' + opp.id) 
-						h3= opp.title
-					p Created at #{moment(opp.createdAt).format('DD/MM/YYYY')}
-					hr
+				-
+					var draft = [];
+					var open = [];
+					var closed = [];
+					for(var i = 0; i < locals.opportunities.length; i++ ) {
+						if (locals.opportunities[i].isOpen) { open.push(locals.opportunities[i]); }
+						else if (locals.opportunities[i].isClosed) { closed.push(locals.opportunities[i]); }
+						else { draft.push(locals.opportunities[i]); }
+					}
+
+				if open.length > 0 
+					h3 Published and open requirements
+					each opp in open
+						a(href='/opportunity/update/summary/' + opp.id) 
+							h3= opp.title
+						p Published at #{moment(opp.publishedAt).format('DD/MM/YYYY')}.  Closing at: #{moment(opp.closesAt).format('DD/MM/YYYY')}
+						hr
+
+				if draft.length > 0 
+					h3 Draft requirements
+					each opp in draft
+						a(href='/opportunity/update/summary/' + opp.id) 
+							h3= opp.title
+						p Created at #{moment(opp.createdAt).format('DD/MM/YYYY')}
+						hr
+
+				if closed.length > 0 
+					h3 Closed requirements
+					each opp in closed
+						a(href='/opportunity/update/summary/' + opp.id) 
+							h3= opp.title
+						p Closed at: #{moment(opp.closesAt).format('DD/MM/YYYY')}
+						hr
