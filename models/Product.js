@@ -17,10 +17,10 @@ Product.add({
 	shortDescription: { type: Types.Textarea },
 	description: { type: Types.Markdown, required: false },
 	price: { type: Types.Money, required: false },
-	isLive: { type: Types.Boolean, default: false },
+	isLive: { type: Types.Boolean, default: false }, // simply use to hide applications for now.  Very possible we'll split application products entirely...
 	productType: { type: Types.Relationship, ref: 'ProductType' },
 	categories: { type: Types.Relationship, ref: 'Category', many: true },
-	createdAt: { type: Date, default: Date.now, noedit: true }
+	createdAt: { type: Date, default: Date.now, noedit: true },
 });
 
 Product.defaultSort = '-name';

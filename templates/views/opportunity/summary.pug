@@ -13,6 +13,10 @@ block content
 			h3= locals.opportunity.productType.name
 			if locals.opportunity.isPublished
 				p.lead Published #{moment(locals.opportunity.publishedAt).format('DD/MM/YYYY')}.  Closing: #{moment(locals.opportunity.closesAt).format('DD/MM/YYYY')}
+				p 
+					a(href='/opportunity/' + locals.opportunity.id) View your opportunity
+			else
+				p.lead Unpublished
 			hr
 			.row
 				.col-sm-12.col-md-8
@@ -60,10 +64,10 @@ block content
 									span.glyphicon.glyphicon-ok
 						
 						if locals.opportunity.isPublished
-							.panel-body You've published your requirements
-							ul.list-group
-								li.list-group-item
-									a(href='/opportunity/' + locals.opportunity.id) View your published opportunity/requirements
+							.panel-body You have published your requirements
+							//- ul.list-group
+							//- 	li.list-group-item
+							//- 		a(href='/opportunity/' + locals.opportunity.id) View your published opportunity/requirements
 
 						else
 							.panel-body Before you publish your requirements, let suppliers know how you will handle questions and answers
@@ -88,6 +92,10 @@ block content
 										br 
 										span You'll be able to do this once you've completed the fields above
 
+					hr
+					p Once published, you'll then need to do the following:
+					hr
+
 					.panel.panel-default
 						.panel-heading 4. Answer supplier questions
 						.panel-body You must answer all questions by ?. Suppliers will send you questions by email.
@@ -96,25 +104,29 @@ block content
 								li.list-group-item
 									a(href='') Publish questions and answers
 							li.list-group-item
-								a(href='') How to answer supplier questions
+								a(href='') Guidance: How to answer supplier questions
+
+					hr
+					p After your opportunity closes, these are the steps to complete next:
+					hr
 
 					.panel.panel-default
 						.panel-heading 5. Shortlist
 						.panel-body After the application deadline, shortlist the suppliers who applied.
 						ul.list-group
 							li.list-group-item
-								a(href='') How to shortlist suppliers
+								a(href='') Guidance: How to shortlist suppliers
 
 					.panel.panel-default
 						.panel-heading 6. Evalute
 						.panel-body Evaluate your shortlist using the criteria and methods you published with your requirements.
 						ul.list-group
 							li.list-group-item
-								a(href='') How to evaluate suppliers
+								a(href='') Guidance: How to evaluate suppliers
 
 					.panel.panel-default
 						.panel-heading 7. Award a contract
 						.panel-body You must give your chosen supplier a contract before they start work.
 						ul.list-group
 							li.list-group-item
-								a(href='') How to award a contract
+								a(href='') Guidance: How to award a contract

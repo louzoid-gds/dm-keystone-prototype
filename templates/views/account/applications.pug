@@ -1,0 +1,56 @@
+extends ../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My account', url: '/account/me'}, { name: 'Framework applications'}]
+		+breadcrumb(items)
+			
+		.row
+			.col-sm-4: .well.well-lg
+				include _nav.pug
+		
+			.col-sm-8
+
+				-
+					var comingSoon = [];
+					var open = [];
+					for(var i = 0; i < locals.frameworks.length; i++ ) {
+						if (locals.frameworks[i].isOpen) { open.push(locals.frameworks[i]); }
+						else if (locals.frameworks[i].isComingSoon) { comingSoon.push(locals.frameworks[i]); }
+					}
+
+				if open.length > 0
+					each f in open
+						- var alreadyHasApp = locals.applications.find(o => o.framework.id == f.id)
+						if (!alreadyHasApp)
+							p.lead #{f.name} now open for applications
+							p!= f.description.html
+							form(method='post', action='/application/create/' + f.id, role='create')
+								input(type='hidden', name='action', value='create')
+								p
+									button(type='submit').btn.btn-default Start application
+							p Closes for applications at #{moment(f.closesForApplicationsAt).format('DD/MM/YYYY')}
+							hr
+
+				if comingSoon.length > 0
+					h3 Frameworks opening soon
+					p The following frameworks will be opening for applications soon
+					each f in comingSoon
+						p #{f.name} opens for applications at #{moment(f.openForApplicationsAt).format('DD/MM/YYYY')}
+				
+				h2 My applications
+				p To do: check with team what should be listed here.  Obviously in progress applications.  What about old ones?
+				each app in locals.applications
+					h3= app.framework.name
+					p.lead Status: #{app.status}
+					if app.isPotentiallyEditable && app.framework.isOpen
+						p
+							button.btn.btn-default Continue your application
+						p Closes for applications at #{moment(app.framework.closesForApplicationsAt).format('DD/MM/YYYY')}
+					else
+						p Closed for applications at #{moment(f.closesForApplicationsAt).format('DD/MM/YYYY')}
+						p Outcome: #{app.outcome}
+						p Links to framework agreement etc if relevant
+					hr

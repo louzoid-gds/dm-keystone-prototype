@@ -19,7 +19,7 @@ ProductType.add({
 	isOpenToCompetition: { type: Types.Boolean, initial: true },
 	createdAt: { type: Date, default: Date.now, noedit: true },
 	attributes: { type: Types.Relationship, ref: 'Attribute', many: true, filters: { usage: 'productField' }, note: 'Properties for the service listing and search' },
-	// seeing as we're using Mongo, probably better off as a nested obj!  Oh well.
+	// seeing as we're using Mongo, probably better off as a nested obj!  Found out a bit late that Keystone supports these.  Oh well!
 	opportunityConfiguration: { type: Types.Relationship, ref: 'OpportunityConfiguration', dependsOn: { isOpenToCompetition: true } },
 });
 

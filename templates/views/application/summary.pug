@@ -1,0 +1,38 @@
+extends ../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My account', url: '/account/me'}, { name: 'My application'}]
+		+breadcrumb(items)
+
+		- var fw = locals.application.framework
+		.row: .col-sm-12
+			h1 Apply to #{fw.name}
+			p.lead Deadline #{moment(fw.closesForApplicationsAt).format('DD/MM/YYYY')}
+			
+			hr
+			.row
+				.col-sm-12.col-md-8
+					h3 Make supplier declaration
+					p Confirm eligibility, agree to the application terms and provide supplier information.
+
+					hr
+
+					h3 Add, edit and complete services
+					p You need to add and complete services
+
+					hr
+
+					h3 Guidance
+					p
+						a() Read about how to apply
+
+					hr
+
+					h2 Legal documents
+					h3 Communications
+					p View communications and clarification questions
+
+					

@@ -25,6 +25,7 @@ Attribute.add({
 		{ value: 'productField', label: 'Product field' },
 		{ value: 'opportunityField', label: 'Opportunity field' },
 		{ value: 'evaluationField', label: 'Evaluation field' },
+		{ value: 'applicationField', label: 'Framework application field' },
 	] },
 	description: { type: Types.Text, initial: false },
 	placeholder: { type: Types.Text, initial: false },

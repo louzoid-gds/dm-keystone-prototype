@@ -7,12 +7,11 @@ exports = module.exports = function (req, res) {
 	var view = new keystone.View(req, res);
 	var locals = res.locals;
 	locals.filters = {
-		cat: req.params.category
+		cat: req.params.category,
 	};
 
-	//must be a better way of doing this than doing 2 queries....
+	// must be a better way of doing this than doing 2 queries....
 	view.on('init', function (next) {
-		
 		if (locals.filters.cat) {
 			Category.model.findOne()
 				.where('_id', locals.filters.cat)

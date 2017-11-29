@@ -78,14 +78,14 @@ exports = module.exports = function (req, res) {
 
 	view.on('init', function (next) {
 		locals.isReadyToPublish = false;
-		if (!locals.opportunity.basicsComplete) next();
-		if (!locals.opportunity.evaluationBasicsComplete) next();
-		if (locals.incompleteAttributes.length > 0) next();
-		if (locals.incompleteEvaluationCriteria.length > 0) next();
+		if (!locals.opportunity.basicsComplete) { next(); return; }
+		if (!locals.opportunity.evaluationBasicsComplete) { next(); return; }
+		if (locals.incompleteAttributes.length > 0) { next(); return; }
+		if (locals.incompleteEvaluationCriteria.length > 0) { next(); return; }
 		if (locals.opportunity.configurationAtCreation.howLongOpenForOptions) {
 			if (locals.opportunity.configurationAtCreation.howLongOpenForOptions.length > 1) {
 				if (locals.opportunity.howLongOpenFor) locals.isReadyToPublish = true;
-				else next();
+				else { next(); return; }
 			} else locals.isReadyToPublish = true;
 		} else locals.isReadyToPublish = true;
 		next();
