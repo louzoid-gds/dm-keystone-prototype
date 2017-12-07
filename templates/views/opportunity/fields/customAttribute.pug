@@ -1,4 +1,5 @@
 extends ../../../layouts/default
+include ../../../mixins/attributeField
 
 block content
 	
@@ -20,16 +21,7 @@ block content
 						input(type='hidden', name='action', value='update')
 						p= locals.attribute.legend
 						.form-group.padlarge
-							label= locals.attribute.label
-							case locals.attribute.questionType
-								when 'text'
-									input(type='text', value=locals.attributeValue ? locals.attributeValue.value : '', name='value', locals.attribute.required ? required : '').form-control
-								when 'textArea'
-									textarea(name='value').form-control
-										if locals.attributeValue
-											= locals.attributeValue.value
-								when 'boolean'
-									p radios not implemented yet
+							+attributeField({ value: locals.attributeValue ? locals.attributeValue.value : '', label: locals.attribute.label, type: locals.attribute.questionType, name: 'value' })
 
 						button(type='submit').btn.btn-block.btn-primary.btn-submit Update
 

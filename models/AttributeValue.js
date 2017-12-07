@@ -18,8 +18,9 @@ AttributeValue.add({
 	value: { type: Types.Text, initial: true },
 	product: { type: Types.Relationship, ref: 'Product', initial: true },
 	opportunity: { type: Types.Relationship, ref: 'Opportunity', initial: true },
+	declaration: { type: Types.Relationship, ref: 'Declaration', initial: true },
 	attribute: { type: Types.Relationship, ref: 'Attribute', initial: true, required: true },
 });
 
-AttributeValue.defaultColumns = 'attribute, value, product, opportunity, createdAt';
+AttributeValue.defaultColumns = 'attribute, value, product, opportunity, declaration, createdAt';
 AttributeValue.register();

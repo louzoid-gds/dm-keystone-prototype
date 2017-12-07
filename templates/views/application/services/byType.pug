@@ -1,0 +1,24 @@
+extends ../../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My account', url: '/account/me'}, { name: 'My application', url: '/application/summary/' + locals.application.id}
+			, { name: 'Your ' + locals.application.framework.name + ' services', url: '/application/services/' + locals.application.id }
+			, { name: ''}]
+		+breadcrumb(items)
+
+		- var fw = locals.application.framework
+		.row: .col-sm-12
+			//- h1 Your #{locals.application.framework.name} services
+			//- p.lead Deadline for applications: #{moment(fw.closesForApplicationsAt).format('DD/MM/YYYY')}
+			
+			//- hr
+			//- .row
+			//- 	.col-sm-12.col-md-8
+			//- 		each pt in locals.application.framework.productTypesToInclude
+			//- 			h3
+			//- 				a()= pt.name
+			//- 			p!= pt.description.html
+			//- 			br

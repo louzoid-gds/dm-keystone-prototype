@@ -1,0 +1,27 @@
+extends ../../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My account', url: '/account/me'}, 
+			{ name: 'My application', url: '/application/summary/' + locals.application.id }, { name: 'Make your supplier declaration' }]
+		+breadcrumb(items)
+
+		- var fw = locals.application.framework
+		.row: .col-sm-12
+			h1 Make your supplier declaration
+
+			hr
+			.row
+				.col-sm-12.col-md-8
+					p You must make the supplier declaration to confirm you’re eligible to provide services through #{locals.application.framework.name}.
+
+					p You can come back and change your answers before the application deadline at #{moment(locals.application.framework.closesForApplicationsAt).format('DD/MM/YYYY')}.
+
+					p After the application deadline, the Crown Commercial Service will review your answers and let you know if your application has been successful.
+
+					form(method='post', action='/application/declaration/start/' + locals.application.id, role='create')
+						input(type='hidden', name='action', value='create')
+						p
+							button(type='submit').btn.btn-default Start your declaration

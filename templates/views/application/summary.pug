@@ -10,21 +10,28 @@ block content
 		- var fw = locals.application.framework
 		.row: .col-sm-12
 			h1 Apply to #{fw.name}
-			p.lead Deadline #{moment(fw.closesForApplicationsAt).format('DD/MM/YYYY')}
+			p.lead Deadline: #{moment(fw.closesForApplicationsAt).format('DD/MM/YYYY')}
 			
 			hr
 			.row
 				.col-sm-12.col-md-8
-					h3 Make supplier declaration
+					if locals.application.declaration
+						h3 
+							a(href='/application/declaration/update/' + locals.application.id) Edit supplier declaration
+					else
+						h3 
+							a(href='/application/declaration/start/' + locals.application.id) Make supplier declaration
 					p Confirm eligibility, agree to the application terms and provide supplier information.
 
 					hr
 
-					h3 Add, edit and complete services
+					h3 
+						a(href='/application/services/' + locals.application.id) Add, edit and complete services
 					p You need to add and complete services
 
 					hr
 
+					br
 					h3 Guidance
 					p
 						a() Read about how to apply

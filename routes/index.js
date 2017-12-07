@@ -50,7 +50,7 @@ exports = module.exports = function (app) {
 	app.all('/opportunity/update/:opportunity/detailedRequirements/:attribute', routes.views.opportunity.customAttribute);
 	app.all('/opportunity/update/:opportunity/evaluationCriteria/:evaluationCriteria', routes.views.opportunity.evaluationCriteria);
 	app.all('/opportunity/update/:opportunity/assessmentMethods', routes.views.opportunity.assessmentMethods);
-	app.all('/opportunity/update/:opportunity/evaluationWeighting', routes.views.opportunity.evaluationWeighting);	
+	app.all('/opportunity/update/:opportunity/evaluationWeighting', routes.views.opportunity.evaluationWeighting);
 	app.all('/opportunity/update/:opportunity/:field', routes.views.opportunity.basics);
 
 	app.all('/contact', routes.views.contact);
@@ -63,6 +63,11 @@ exports = module.exports = function (app) {
 
 	app.post('/application/create/:framework', routes.views.application.create);
 	app.get('/application/summary/:application', routes.views.application.summary);
+	app.all('/application/declaration/start/:application', routes.views.application.declaration.start);
+	app.get('/application/declaration/update/:application', routes.views.application.declaration.summary);
+	app.all('/application/declaration/update/:application/:coreTermGroup', routes.views.application.declaration.coreTermGroup);
+	app.get('/application/services/:application', routes.views.application.services.summary);
+	app.get('/application/services/:application/:type', routes.views.application.services.byType);
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
 

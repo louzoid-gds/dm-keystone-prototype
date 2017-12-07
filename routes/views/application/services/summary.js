@@ -14,7 +14,7 @@ exports = module.exports = function (req, res) {
 
 	view.on('init', function (next) {
 		Application.model.findOne()
-			.where('_id', locals.filters.application).populate('framework').populate('declaration')
+			.where('_id', locals.filters.application).populate({ path: 'framework', populate: { path: 'productTypesToInclude' } })
 			.exec(function (err, app) {
 				if (err) return res.err(err);
 				if (!app) return res.notfound('Application not found');
@@ -24,5 +24,5 @@ exports = module.exports = function (req, res) {
 	});
 
 	// Render the view
-	view.render('application/summary');
+	view.render('application/services/summary');
 };

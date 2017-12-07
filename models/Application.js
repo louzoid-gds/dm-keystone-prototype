@@ -15,10 +15,7 @@ var Application = new keystone.List('Application', {
 
 Application.add({
 	framework: { type: Types.Relationship, ref: 'Framework', required: true, initial: true },
-	declarationCoreTerms: { type: Types.Relationship, ref: 'DeclarationCoreTerms' },
-	// (group the below under declaration object?)
-	// core terms (application specific copy of core term values)
-	// framework specific terms (Call off terms? Schedule terms? What's the proper name for these?),
+	declaration: { type: Types.Relationship, ref: 'Declaration' },
 	// these statuses are probably wrong. Revisit.
 	status: { type: Types.Select, required: true, default: 'inProgress', options: [
 		{ value: 'inProgress', label: 'In Progress' },
@@ -30,6 +27,7 @@ Application.add({
 		{ value: 'accepted', label: 'Accepted onto framework' },
 		{ value: 'failed', label: 'Application rejected' },
 	] },
+	products: { type: Types.Relationship, ref: 'Product', many: true },
 });
 
 // virtuals

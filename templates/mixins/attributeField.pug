@@ -1,0 +1,20 @@
+mixin attributeField(item)
+
+	//- ah if only things were this simple in the real world :)
+
+	.form-group.padlarge(class=item.invalid ? 'has-error' : null)
+		label!= item.label
+		case item.type
+			when 'text'
+				input(type='text', value=item.value, name=item.name, item.required ? required : '').form-control
+			when 'textArea'
+				textarea(name=item.name).form-control
+					if item.value
+						= item.value
+			when 'boolean'
+				label.radio-inline.block-label
+					input(type='radio', name=item.name, value='true', checked=(item.value && item.value === 'true' ? "checked" : undefined)) 
+					span Yes
+				label.radio-inline.block-label
+					input(type='radio', name=item.name, value='false', checked=(item.value && item.value === 'false' ? "checked" : undefined)) 
+					span No

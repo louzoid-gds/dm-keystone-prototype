@@ -1,0 +1,41 @@
+extends ../../../../layouts/default
+include ../../../../mixins/attributeField
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My account', url: '/account/me'}, 
+			{ name: 'My application', url: '/application/summary/' + locals.application.id }, 
+			{ name: 'Your declaration overview', url: '/application/declaration/update/' + locals.application.id },
+			{ name: 'Grounds for mandatory exclusion'}]
+		+breadcrumb(items)
+
+		- var fw = locals.application.framework
+		.row: .col-sm-12
+			h1 Grounds for mandatory exclusion
+			hr
+			.row
+				.col-sm-12.col-md-8
+					p You must be able to truthfully answer ‘no’ to every question under ‘Grounds for mandatory exclusion’ for your bid to be considered eligible. If you can’t answer ‘no’ to every question in this section, it’s very unlikely that your bid will be accepted.
+
+					p In questions 17 to 21, ‘anyone who represents, supervises or has control in your organisation or a partner or parent organisation’ includes members of your group of economic operators, their proposed subcontractors, and any directors, partners, or any other person who has powers of representation, decision or control. Check that your organisation complies with Regulation 57(1) of the Public Contracts Regulations 2015.
+					- var cts = locals.application.framework.coreTermsVersionToUse
+					form(method='post', action='/application/declaration/update/' + locals.application.id + '/groundsForMandatoryExclusion', role='create')
+						input(type='hidden', name='action', value='update')
+
+						each term in cts.groundsForMandatoryExclusion
+							- 
+								var v = locals.declarationValues.find(o => o.attribute == term.id);
+								if (v) { v = v.value }
+								if (locals.formData) {
+									var sv = locals.formData[term.id];
+									if (sv) { v = sv }
+								}
+							+attributeField({ invalid: locals.validationErrors ? locals.validationErrors[term.id] : false, value: v, label: term.longLabel.html, type: term.questionType, name: term.id })
+						br
+						button(type='submit').btn.btn-primary.btn-submit Save my answers
+
+					br
+					p.padlarge
+						a(href='/application/declaration/update/' + locals.application.id) Return to overview

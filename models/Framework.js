@@ -21,6 +21,7 @@ Framework.add({
 	closesForApplicationsAt: { type: Types.Datetime },
 	description: { type: Types.Markdown, required: false },
 	productTypesToInclude: { type: Types.Relationship, ref: 'ProductType', many: true },
+	coreTermsVersionToUse: { type: Types.Relationship, ref: 'CoreTerms' },
 	customDeclarationTerms: { type: Types.Relationship, ref: 'Attribute', many: true, filters: { usage: 'applicationField' }, note: 'Extensions to the core terms for this framework' },
 	createdAt: { type: Date, default: Date.now, noedit: true },
 });

@@ -1,0 +1,40 @@
+extends ../../../../layouts/default
+include ../../../../mixins/attributeField
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My account', url: '/account/me'}, 
+			{ name: 'My application', url: '/application/summary/' + locals.application.id }, 
+			{ name: 'Your declaration overview', url: '/application/declaration/update/' + locals.application.id },
+			{ name: 'Essentials'}]
+		+breadcrumb(items)
+
+		- var fw = locals.application.framework
+		.row: .col-sm-12
+			h1 Essentials
+			hr
+			.row
+				.col-sm-12.col-md-8
+					p You must make this declaration to apply to #{locals.application.framework.name}. You can come back and change your answers at any time before #{moment(locals.application.framework.closesForApplicationsAt).format('DD/MM/YYYY')}.
+					p You must be able to truthfully answer ‘yes’ to every question under ‘Essentials’ for your bid to be considered eligible. If you can’t answer ‘yes’ to every question in this section, it’s very unlikely that your bid will be accepted.
+					- var cts = locals.application.framework.coreTermsVersionToUse
+					form(method='post', action='/application/declaration/update/' + locals.application.id + '/essentials', role='create')
+						input(type='hidden', name='action', value='update')
+
+						each term in cts.essentials
+							- 
+								var v = locals.declarationValues.find(o => o.attribute == term.id);
+								if (v) { v = v.value }
+								if (locals.formData) {
+									var sv = locals.formData[term.id];
+									if (sv) { v = sv }
+								}
+							+attributeField({ invalid: locals.validationErrors ? locals.validationErrors[term.id] : false, value: v, label: term.longLabel.html, type: term.questionType, name: term.id })
+						br
+						button(type='submit').btn.btn-primary.btn-submit Save my answers
+
+					br
+					p.padlarge
+						a(href='/application/declaration/update/' + locals.application.id) Return to overview

@@ -1,0 +1,12 @@
+mixin coreTermTableRow(item)
+	- 
+		var v = item.value;
+		if (v === 'true') { v = 'Yes' }
+		else { v = 'No' }
+	tr
+		td!= item.text
+		if item.value
+			td= v
+		else
+			td
+				a(href=item.href) Answer question

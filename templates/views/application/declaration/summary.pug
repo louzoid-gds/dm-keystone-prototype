@@ -1,0 +1,41 @@
+extends ../../../layouts/default
+include ../../../mixins/coreTermTableRow
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My account', url: '/account/me'}, 
+			{ name: 'My application', url: '/application/summary/' + locals.application.id }, { name: 'Your declaration overview' }]
+		+breadcrumb(items)
+
+		- var fw = locals.application.framework
+		.row: .col-sm-12
+			h1 Your declaration overview
+
+			hr
+			.row
+				.col-sm-12.col-md-8
+					
+					p You must answer all questions and make your declaration before #{moment(locals.application.framework.closesForApplicationsAt).format('DD/MM/YYYY')} to apply to #{locals.application.framework.name}.
+					- var cts = locals.application.framework.coreTermsVersionToUse
+					h3 Essentials
+					p 
+						a(href='/application/declaration/update/' + locals.application.id + '/essentials') Edit all answers in this section
+					table.table.declaration-table
+						each term in cts.essentials
+							- 
+								var v = locals.declarationValues.find(o => o.attribute == term.id)
+							+coreTermTableRow({ value: v ? v.value : null, text: term.longLabel.html, href:'/application/declaration/update/' + locals.application.id + '/essentials' })
+
+					h3 Grounds for mandatory exclusion
+					p
+						a(href='/application/declaration/update/' + locals.application.id + '/groundsForMandatoryExclusion') Edit all answers in this section
+					table.table.declaration-table
+						each term in cts.groundsForMandatoryExclusion
+							- 
+								var v = locals.declarationValues.find(o => o.attribute == term.id)
+							+coreTermTableRow({ value: v ? v.value : null, text: term.longLabel.html, href:'/application/declaration/update/' + locals.application.id + '/groundsForMandatoryExclusion' })
+					
+					p.padlarge
+						a(href='/application/summary/' + locals.application.id) Return to application
