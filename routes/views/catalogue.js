@@ -30,7 +30,7 @@ exports = module.exports = function (req, res) {
 
 	view.on('init', function (next) {
 
-		if (locals.filters.cat) {
+		if (locals.category) {
 			Category.model.find()
 				.where('isHidden', 'false')
 				.where('parentCategory', locals.filters.cat)
@@ -47,6 +47,33 @@ exports = module.exports = function (req, res) {
 					locals.categories = cats;
 					next();
 				});
+		}
+	});
+
+	view.on('init', function (next) {
+		if (!locals.categories) {
+			next();
+		}
+		else {
+			// for each category, check for sub cats
+			var childCats = [];
+			locals.childCategories = {};
+			locals.categories.forEach(function (item) {
+				// this is dangerous and not cool for production
+				var getPromise = Category.model.find()
+					.where('parentCategory', item.id)
+					.exec(function (err, cc) {
+						if (!err) {
+							locals.childCategories[item.id] = cc;
+						}
+					});
+				childCats.push(getPromise);
+			});
+			Promise.all(childCats).then(function (results) {
+				next();
+			}).catch(function (err) {
+				return res.err(err);
+			});
 		}
 	});
 

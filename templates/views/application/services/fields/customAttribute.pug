@@ -1,0 +1,32 @@
+extends ../../../../layouts/default
+include ../../../../mixins/attributeField
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var application = locals.product.application;
+			var items = [{ name: 'My account', url: '/account/me'}, { name: 'My application', url: '/application/summary/' + application.id}
+			, { name: 'Your ' + application.framework.name + ' services', url: '/application/services/' + application.id }];
+			if (locals.product.productType.canAddMoreThanOneServiceOnApplication) {
+				items.push({ name: locals.product.productType.name, url: '/application/services/' + application.id + '/' + locals.product.productType.id });
+			}
+			items.push({ name: locals.product.name, url: '/application/services/' + application.id + '/service/' + locals.product.id });
+			items.push({ name: locals.attribute.label })
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1= locals.attribute.label 
+			hr
+			.row
+				.col-sm-6
+					form(method='post', action='', role='create')
+						input(type='hidden', name='action', value='update')
+						p!= locals.attribute.textAboveLabel.html
+						.form-group.padlarge
+							//- +attributeField({ value: locals.attributeValue ? locals.attributeValue.value : '', label: locals.attribute.longLabel.html, type: locals.attribute.questionType, name: 'value', options: locals.attribute.options })
+							+attributeField({ invalid: locals.validationErrors ? locals.validationErrors[term.id] : false, valueObj: locals.attributeValue, attributeObj: locals.attribute })
+						p
+							button(type='submit').btn.btn-primary.btn-submit Update
+
+				

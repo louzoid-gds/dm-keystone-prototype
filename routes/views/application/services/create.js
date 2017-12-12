@@ -28,58 +28,37 @@ exports = module.exports = function (req, res) {
 	});
 
 	view.on('init', function (next) {
-		Product.model.find()
-			.where('application', locals.filters.application)
-			.exec(function (err, products) {
-				if (err) return res.err(err);
-				locals.products = products;
-				next();
-			});
-	});
-
-	view.on('init', function (next) {
 		ProductType.model.findOne()
 			.where('_id', locals.filters.productType)
 			.exec(function (err, pt) {
 				if (err) return res.err(err);
 				if (!pt) return res.notfound('Product type not found');
-
-				if (!pt.canAddMoreThanOneServiceOnApplication) {
-					var redir = '/application/services/' + locals.application.id + '/service/';
-					// check if product exists, if so redirect, if not, create and redirect
-					var p = locals.products.find(o => o.productType.toString() === pt.id.toString());
-					if (p) {
-						return res.redirect(redir + p.id);
-					}
-					else {
-						var newProd = new Product.model({
-							createdBy: locals.user.id,
-							application: locals.application,
-							productType: pt,
-							name: pt.name,
-						});
-						newProd.save(function (err) {
-							if (err) return res.err(err.errors);
-							else return res.redirect(redir + newProd.id);
-						});
-					}
-				}
-				else {
-					locals.productType = pt;
-					next();
-				}
+				locals.productType = pt;
+				next();
 			});
 	});
 
-	view.on('init', function (next) {
-		Product.model.find()
-			.where('application', locals.application)
-			.where('productType', locals.productType)
-			.exec(function (err, products) {
-				if (err) return res.err(err);
-				locals.products = products;
-				next();
-			});
+	view.on('post', { action: 'create' }, function (next) {
+		var newProd = new Product.model({
+			createdBy: locals.user.id,
+			application: locals.application,
+			productType: locals.productType,
+		});
+		var updater = newProd.getUpdateHandler(req);
+
+		updater.process(req.body, {
+			flashErrors: true,
+			fields: 'name',
+			errorMessage: 'There was a problem creating your service',
+		}, function (err) {
+			if (err) {
+				locals.validationErrors = err.errors;
+			} else {
+				return res.redirect('/application/services/' + locals.application.id + '/service/' + newProd.id);
+			}
+			next();
+		});
+
 	});
 
 	// view.on('post', { action: 'create' }, function (next) {
@@ -98,5 +77,5 @@ exports = module.exports = function (req, res) {
 	// });
 
 	// Render the view
-	view.render('application/services/byType');
+	view.render('application/services/create');
 };

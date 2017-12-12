@@ -18,6 +18,7 @@ exports = module.exports = function (req, res) {
 			.where('_id', locals.filters.application).populate('framework') // .populate('declaration')
 			.exec(function (err, app) {
 				if (err) return res.err(err);
+				if (req.user._id.toString() !== app.createdBy.toString()) return res.redirect('/');
 				locals.application = app;
 				next();
 			});

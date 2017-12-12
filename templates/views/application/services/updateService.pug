@@ -1,0 +1,73 @@
+extends ../../../layouts/default
+include ../../../mixins/productAttributeTableRow
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var application = locals.product.application;
+			var items = [{ name: 'My account', url: '/account/me'}, { name: 'My application', url: '/application/summary/' + application.id}
+			, { name: 'Your ' + application.framework.name + ' services', url: '/application/services/' + application.id }];
+			if (locals.product.productType.canAddMoreThanOneServiceOnApplication) {
+				items.push({ name: locals.product.productType.name, url: '/application/services/' + application.id + '/' + locals.product.productType.id });
+			}
+			items.push({ name: locals.product.name });
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1= locals.product.name
+
+			hr
+			.row
+				.col-sm-12.col-md-8
+					- var p = locals.product
+					p Last edited: #{moment(p.updatedAt).format('DD/MM/YYYY hh:mm:ss')} by #{p.updatedBy}
+
+					if locals.incompleteAttributes.length === 0 && p.status === 'draft'
+						p All required questions have been completed.  You can now mark this service as complete.
+						form(method='post', action='/application/services/' + application.id + '/service/' + locals.product.id, role='update')
+							input(type='hidden', name='action', value='complete')
+							p
+								button(type='submit').btn.btn-default Mark service as complete
+					else if (p.status === 'complete')
+						p This service is marked as complete and will be submitted at #{moment(application.framework.closesForApplicationsAt).format('DD/MM/YYYY hh:mm:ss')}
+					else
+						p #{locals.incompleteAttributes.length} unanswered questions 
+						p Once you’ve entered all the required information, you can mark the service as complete.
+					
+
+					if p.productType.isListable
+						h3 Basics
+						table.table.declaration-table
+							+productAttributeTableRow({ value: { value: p.name }, text: 'Service name', href:'/application/services/' + application.id + '/service/' + locals.product.id + '/basics/name' })
+							+productAttributeTableRow({ value: { value: p.shortDescription }, text: 'Service description', href:'/application/services/' + application.id + '/service/' + locals.product.id + '/basics/shortDescription' })
+							//- tr
+							//- 	td Service categories
+							//- 	td to do
+							//- tr
+							//- 	td Pricing
+							//- 	td to do
+
+					br
+					each ag in p.productType.attributeGroups
+						h3= ag.label
+						table.table.declaration-table
+							each att in ag.attributes
+								- 
+									var v = locals.attributeValues.find(o => o.attribute == att.id)
+								+productAttributeTableRow({ value: v, text: att.label, href:'/application/services/' + application.id + '/service/' + p.id + '/' + att.id })
+						br
+
+					//- h3 Pricing
+					//- table.table.declaration-table
+					//- 	tr
+					//- 		td Pricing - Going to have to be custom attributes as differs per product type. That's going to make comparisons very difficult
+					//- 		td 
+
+					//- now list attribute groups
+					//- need to once and for all decide how to handle specialists. Product vs Product variant
+
+					
+					br
+					p.padlarge
+						a(href='/application/services/' + application.id) Return to application

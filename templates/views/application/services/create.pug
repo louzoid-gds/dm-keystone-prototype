@@ -1,0 +1,29 @@
+extends ../../../layouts/default
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'My account', url: '/account/me'}, { name: 'My application', url: '/application/summary/' + locals.application.id}
+			, { name: 'Your ' + locals.application.framework.name + ' services', url: '/application/services/' + locals.application.id }
+			, { name: locals.productType.name }]
+		+breadcrumb(items)
+
+		//- - var fw = locals.application.framework
+		.row: .col-sm-12
+			h1 Service name
+
+			hr
+			.row
+				.col-sm-12.col-md-8
+
+					form(method='post', action='/application/services/' + locals.application.id + '/' + locals.productType.id + '/create', role='create')
+						input(type='hidden', name='action', value='create')
+						p What’s your service called?
+						p Include your service name only. Don’t use extra keywords.
+						.form-group
+							label Service name
+							input(type='text', value='', name='name', required).form-control
+							
+						button(type='submit').btn.btn-primary.btn-submit Save and continue
+					

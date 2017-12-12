@@ -32,7 +32,9 @@ block content
 									var sv = locals.formData[term.id];
 									if (sv) { v = sv }
 								}
-							+attributeField({ invalid: locals.validationErrors ? locals.validationErrors[term.id] : false, value: v, label: term.longLabel.html, type: term.questionType, name: term.id })
+								var valObj = { value: v };
+							//- +attributeField({ invalid: locals.validationErrors ? locals.validationErrors[term.id] : false, value: v, label: term.longLabel.html, type: term.questionType, name: term.id })
+							+attributeField({ invalid: locals.validationErrors ? locals.validationErrors[term.id] : false, valueObj: valObj, attributeObj: term, name: term.id })
 						br
 						button(type='submit').btn.btn-primary.btn-submit Save my answers
 

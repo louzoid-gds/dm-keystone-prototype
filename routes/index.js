@@ -39,6 +39,7 @@ exports = module.exports = function (app) {
 	app.get('/catalogue', routes.views.catalogue);
 	app.get('/catalogue/:category?', routes.views.catalogue);
 	app.get('/catalogue/search/:category', routes.views.search);
+	app.get('/catalogue/service/:product', routes.views.product);
 
 	app.get('/opportunity/search', routes.views.opportunity.search);
 	app.get('/opportunity/create', routes.views.opportunity.create);
@@ -67,7 +68,11 @@ exports = module.exports = function (app) {
 	app.get('/application/declaration/update/:application', routes.views.application.declaration.summary);
 	app.all('/application/declaration/update/:application/:coreTermGroup', routes.views.application.declaration.coreTermGroup);
 	app.get('/application/services/:application', routes.views.application.services.summary);
-	app.get('/application/services/:application/:type', routes.views.application.services.byType);
+	app.all('/application/services/:application/:type', routes.views.application.services.byType);
+	app.all('/application/services/:application/:type/create', routes.views.application.services.create);
+	app.all('/application/services/:application/service/:product', routes.views.application.services.updateService);
+	app.all('/application/services/:application/service/:product/basics/:field', routes.views.application.services.basics);
+	app.all('/application/services/:application/service/:product/:attribute', routes.views.application.services.customAttribute);
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
 

@@ -1,0 +1,55 @@
+mixin productAttributeTableRow(item)
+	- 
+		//- can't work out how to helper function this in pug...
+		var v = '';
+		if (item.value && item.value.valueTextArray && item.value.valueTextArray.length > 0) {
+			//- yuck
+			var pv = '';
+			for(var i= 0; i < item.value.valueTextArray.length; i++) {
+				var s = item.value.valueTextArray[i];
+				pv = pv + s.substr(0, s.indexOf('.') > 0 ? s.indexOf('.') : s.length);
+				if (i < item.value.valueTextArray.length-1) {
+					pv = pv + ', ';
+				}
+			}
+			v = pv;
+		}
+		else if (item.value) {
+			var v = item.value.value;
+			if (v === 'true') { v = 'Yes' }
+			else if (v === 'false') { v = 'No' }
+		}
+	tr
+		td!= item.text
+		if v !== ''
+			td= v
+			td 
+				a(href=item.href) Edit
+		else
+			td
+				a(href=item.href) Answer question
+			td
+
+mixin productAttributeTableRowDisplay(item)
+	- 
+		var v = '';
+		if (item.value && item.value.valueTextArray && item.value.valueTextArray.length > 0) {
+			//- yuck
+			//- var pv = '';
+			//- for(var i= 0; i < item.value.valueTextArray.length; i++) {
+			//- 	var s = item.value.valueTextArray[i];
+			//- 	pv = pv + s.substr(0, s.indexOf('.') > 0 ? s.indexOf('.') : s.length);
+			//- 	if (i < item.value.valueTextArray.length-1) {
+			//- 		pv = pv + ', ';
+			//- 	}
+			//- }
+			v = item.value.valueTextArray;
+		}
+		else if (item.value) {
+			var v = item.value.value;
+			if (v === 'true') { v = 'Yes' }
+			else if (v === 'false') { v = 'No' }
+		}
+	tr
+		td!= item.text
+		td= (v ? v : 'N/A')

@@ -10,21 +10,32 @@ var Types = keystone.Field.Types;
 var Product = new keystone.List('Product', {
 	nocreate: false,
 	noedit: false,
+	track: true,
 });
 
 Product.add({
-	name: { type: Types.Text, required: true },
+	name: { type: Types.Text, required: false },
 	shortDescription: { type: Types.Textarea },
 	description: { type: Types.Markdown, required: false },
 	price: { type: Types.Money, required: false },
-	isLive: { type: Types.Boolean, default: false }, // simply use to hide applications for now.  Very possible we'll split application products entirely...
+	status: { type: Types.Select, required: true, default: 'draft', options: [
+		{ value: 'draft', label: 'Draft' },
+		{ value: 'complete', label: 'Complete' },
+		{ value: 'live', label: 'Live' },
+		{ value: 'archived', label: 'Archived' },
+	] },
 	productType: { type: Types.Relationship, ref: 'ProductType' },
+	application: { type: Types.Relationship, ref: 'Application' },  // relationship prob best this way round
 	categories: { type: Types.Relationship, ref: 'Category', many: true },
-	createdAt: { type: Date, default: Date.now, noedit: true },
+});
+
+// virtuals
+Product.schema.virtual('islive').get(function () {
+	return this.status === 'live';
 });
 
 Product.defaultSort = '-name';
-Product.defaultColumns = 'name, isLive, createdAt';
+Product.defaultColumns = 'name, status, productType, createdAt';
 
 Product.relationship({ path: 'attributes', ref: 'AttributeValue', refPath: 'product' });
 Product.register();

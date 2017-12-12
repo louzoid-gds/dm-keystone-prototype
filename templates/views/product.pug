@@ -1,0 +1,34 @@
+extends ../layouts/default
+include ../mixins/productAttributeTableRow
+
+block content
+
+	.container-fluid: .content
+		- 
+			var items = [{ name: 'Service catalogue', url: '/catalogue'}]
+			//- obvs, this needs to handle more parent recursion
+			if (locals.product.categories && locals.product.categories.length > 0) {
+				if (locals.product.categories[0].parentCategory) {
+					items.push({ name: locals.product.categories[0].parentCategory.name, url: '/catalogue/' + locals.product.categories[0].parentCategory.id})
+				}
+				items.push({ name: locals.product.categories[0].name, url: '/catalogue/search/' + locals.product.categories[0].id})
+			}
+			items.push({ name: locals.product.name }) 		
+		+breadcrumb(items)
+
+		h1= locals.product.name 
+			br
+			small supplier name here
+		hr
+
+		.row
+			.col-sm-8
+				p= locals.product.shortDescription
+				each ag in locals.product.productType.attributeGroups
+					h3= ag.label
+					table.table.attributes-display-table
+						each att in ag.attributes
+							- 
+								var v = locals.attributeValues.find(o => o.attribute == att.id)
+							+productAttributeTableRowDisplay({ value: v, text: att.label })
+					br

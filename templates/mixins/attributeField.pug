@@ -1,20 +1,47 @@
 mixin attributeField(item)
 
 	//- ah if only things were this simple in the real world :)
+	- 
+		var v = '';
+		var n = item.name ? item.name : 'value';
+		if (item.attributeObj.questionType === 'checkboxOptions') {
+			v = item.valueObj ? item.valueObj.valueTextArray : '';
+			n = 'valueTextArray';
+		}
+		else {
+			v = item.valueObj ? item.valueObj.value : '';
+		}
 
 	.form-group.padlarge(class=item.invalid ? 'has-error' : null)
-		label!= item.label
-		case item.type
+		if item.attributeObj.longLabel != ''
+			label!= item.attributeObj.longLabel.html
+		else
+			label= item.attributeObj.label
+
+		case item.attributeObj.questionType
 			when 'text'
-				input(type='text', value=item.value, name=item.name, item.required ? required : '').form-control
+				input(type='text', value=v, name=n, item.attributeObj.required ? required : '').form-control
 			when 'textArea'
-				textarea(name=item.name).form-control
-					if item.value
-						= item.value
+				textarea(name=n).form-control
+						= v
 			when 'boolean'
 				label.radio-inline.block-label
-					input(type='radio', name=item.name, value='true', checked=(item.value && item.value === 'true' ? "checked" : undefined)) 
+					input(type='radio', name=n, value='true', checked=(v === 'true' ? "checked" : undefined)) 
 					span Yes
 				label.radio-inline.block-label
-					input(type='radio', name=item.name, value='false', checked=(item.value && item.value === 'false' ? "checked" : undefined)) 
+					input(type='radio', name=n, value='false', checked=(v === 'false' ? "checked" : undefined)) 
 					span No
+			when 'radioOptions'
+				each opt in item.attributeObj.options
+					.radio
+						label.block-label
+							input(type='radio', name=n, value=opt, checked=(v === opt ? "checked" : undefined)) 
+							span= opt
+
+			when 'checkboxOptions'
+				each opt in item.attributeObj.options
+					.checkbox
+						label.block-label
+							input(type='checkbox', name=n, value=opt, checked=(v && v.find(o => o === opt) ? "checked" : undefined)) 
+							span= opt
+			

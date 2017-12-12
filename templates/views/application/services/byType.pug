@@ -6,19 +6,57 @@ block content
 		- 
 			var items = [{ name: 'My account', url: '/account/me'}, { name: 'My application', url: '/application/summary/' + locals.application.id}
 			, { name: 'Your ' + locals.application.framework.name + ' services', url: '/application/services/' + locals.application.id }
-			, { name: ''}]
+			, { name: locals.productType.name }]
 		+breadcrumb(items)
 
-		- var fw = locals.application.framework
+		//- - var fw = locals.application.framework
 		.row: .col-sm-12
-			//- h1 Your #{locals.application.framework.name} services
-			//- p.lead Deadline for applications: #{moment(fw.closesForApplicationsAt).format('DD/MM/YYYY')}
-			
-			//- hr
-			//- .row
-			//- 	.col-sm-12.col-md-8
-			//- 		each pt in locals.application.framework.productTypesToInclude
-			//- 			h3
-			//- 				a()= pt.name
-			//- 			p!= pt.description.html
-			//- 			br
+			h1= locals.productType.name
+
+			- 
+				var complete = [];
+				var draft = [];
+				for(var i=0; i < locals.products.length; i++) {
+					if (locals.products[i].status === 'draft') draft.push(locals.products[i]);
+					if (locals.products[i].status === 'complete') complete.push(locals.products[i]);	
+				}
+			hr
+			.row
+				.col-sm-12.col-md-8
+
+					//- form(method='post', action='/application/services/' + locals.application.id + '/' + locals.productType.id, role='create')
+					//- 	input(type='hidden', name='action', value='create')
+					//- 	p
+					//- 		button(type='submit').btn.btn-default Add a service
+
+					p
+						a(href='/application/services/' + locals.application.id + '/' + locals.productType.id + '/create') Add a service
+
+					h3.padlarge Draft services
+
+					table.table.declaration-table
+						if draft.length > 0
+							each p in draft
+								tr
+									td
+										a(href='/application/services/' + locals.application.id + '/service/' + p.id)= (p.name === '' ? 'Unnamed service' : p.name)
+									td Make a copy (to do)
+						else
+							tr
+								td No draft services
+								td 
+
+				
+					h3.padlarge Complete services
+
+					table.table.declaration-table
+						if complete.length > 0
+							each p in complete
+								tr
+									td
+										a(href='/application/services/' + locals.application.id + '/service/' + p.id)= (p.name === '' ? 'Unnamed service' : p.name)
+									td Make a copy (to do)
+						else
+							tr
+								td You haven’t marked any services as complete yet.
+								td 

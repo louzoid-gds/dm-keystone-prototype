@@ -21,6 +21,15 @@ block content
 						else if (locals.frameworks[i].isComingSoon) { comingSoon.push(locals.frameworks[i]); }
 					}
 
+				if comingSoon.length > 0
+					.alert.alert-info.alert-dismissible
+						button(type="button", class="close", data-dismiss="alert", aria-label="Close")
+							span &times;
+						p Framework opening soon notification
+						each f in comingSoon
+							p
+								strong #{f.name} will open for applications at #{moment(f.openForApplicationsAt).format('DD/MM/YYYY')}
+					
 				if open.length > 0
 					each f in open
 						- var alreadyHasApp = locals.applications.find(o => o.framework.id == f.id)
@@ -34,11 +43,6 @@ block content
 							p Closes for applications at #{moment(f.closesForApplicationsAt).format('DD/MM/YYYY')}
 							hr
 
-				if comingSoon.length > 0
-					h3 Frameworks opening soon
-					p The following frameworks will be opening for applications soon
-					each f in comingSoon
-						p #{f.name} opens for applications at #{moment(f.openForApplicationsAt).format('DD/MM/YYYY')}
 				
 				h2 My applications
 				p To do: check with team what should be listed here.  Obviously in progress applications.  What about old ones?

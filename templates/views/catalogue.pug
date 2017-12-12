@@ -19,11 +19,10 @@ block content
 			each cat in locals.categories
 				.col-sm-6
 					.well.well-lg
-						//- terrible hack.  Also need to be better at pug !
-						if cat.parentCategory
-							a(href='/catalogue/search/' + cat.id) 
+						if locals.childCategories[cat.id].length > 0
+							a(href='/catalogue/' + cat.id) 
 								h3= cat.name
 						else
-							a(href='/catalogue/' + cat.id) 
+							a(href='/catalogue/search/' + cat.id) 
 								h3= cat.name
 						p!= cat.description.html

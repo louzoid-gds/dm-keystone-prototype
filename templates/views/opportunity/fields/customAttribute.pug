@@ -21,8 +21,9 @@ block content
 						input(type='hidden', name='action', value='update')
 						p= locals.attribute.legend
 						.form-group.padlarge
-							+attributeField({ value: locals.attributeValue ? locals.attributeValue.value : '', label: locals.attribute.label, type: locals.attribute.questionType, name: 'value' })
-
+							//- +attributeField({ value: locals.attributeValue ? locals.attributeValue.value : '', label: locals.attribute.label, type: locals.attribute.questionType, name: 'value' })
+							+attributeField({ valueObj: locals.attributeValue, attributeObj: locals.attribute, invalid: false })
+							
 						button(type='submit').btn.btn-block.btn-primary.btn-submit Update
 
 				

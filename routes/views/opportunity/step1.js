@@ -12,7 +12,7 @@ exports = module.exports = function (req, res) {
 	var view = new keystone.View(req, res);
 	var locals = res.locals;
 	locals.filters = {
-		pt: req.params.opportunityType
+		pt: req.params.opportunityType,
 	};
 
 	view.on('init', function (next) {

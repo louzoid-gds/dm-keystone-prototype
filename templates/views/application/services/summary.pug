@@ -20,4 +20,25 @@ block content
 						h3
 							a(href='/application/services/' + locals.application.id + '/' + pt.id)= pt.name
 						p!= pt.description.html
+						- 
+							var complete = [];
+							var draft = [];
+							for(var i=0; i < locals.products.length; i++) {
+								if (locals.products[i].productType == pt.id) {
+									if (locals.products[i].status === 'draft') draft.push(locals.products[i]);
+									if (locals.products[i].status === 'complete') complete.push(locals.products[i]);
+								}
+							}
+						if complete.length > 0
+							blockquote.success
+								if complete.length === 1
+									p 1 service to be submitted
+									p You can edit it until the deadline
+								else
+									p #{complete.length} services will be submitted
+									p You can edit them until the deadline
+						if draft.length > 0
+							blockquote
+								p #{draft.length} draft service(s)
+								p Started but not complete
 						br

@@ -1,0 +1,34 @@
+extends ../../../../layouts/default
+include ../../../../mixins/attributeField
+
+block content
+	
+	.container-fluid: .content
+		- 
+			var application = locals.product.application;
+			var items = [{ name: 'My account', url: '/account/me'}, { name: 'My application', url: '/application/summary/' + application.id}
+			, { name: 'Your ' + application.framework.name + ' services', url: '/application/services/' + application.id }];
+			if (locals.product.productType.canAddMoreThanOneServiceOnApplication) {
+				items.push({ name: locals.product.productType.name, url: '/application/services/' + application.id + '/' + locals.product.productType.id });
+			}
+			items.push({ name: locals.product.name, url: '/application/services/' + application.id + '/service/' + locals.product.id });
+			items.push({ name: 'Service description' })
+		+breadcrumb(items)
+
+		.row: .col-sm-12
+			h1 Service description
+			hr
+			.row
+				.col-sm-6
+					form(method='post', action='/application/services/' + application.id + '/service/' + locals.product.id + '/basics/shortDescription', role='create')
+						input(type='hidden', name='action', value='update')
+						//- p Provide a summary describing what your service is for.
+						.form-group.padlarge
+							label Provide a summary describing what your service is for.
+							textarea(name='shortDescription').form-control
+								= locals.product.description.md
+
+						p
+							button(type='submit').btn.btn-primary.btn-submit Update
+
+				

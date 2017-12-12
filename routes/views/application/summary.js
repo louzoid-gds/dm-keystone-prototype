@@ -1,5 +1,6 @@
 var keystone = require('keystone');
 var Application = keystone.list('Application');
+var Product = keystone.list('Product');
 exports = module.exports = function (req, res) {
 
 	if (!req.user) {
@@ -22,6 +23,17 @@ exports = module.exports = function (req, res) {
 				next();
 			});
 	});
+
+	view.on('init', function (next) {
+		Product.model.find()
+			.where('application', locals.filters.application)
+			.exec(function (err, products) {
+				if (err) return res.err(err);
+				locals.products = products;
+				next();
+			});
+	});
+
 
 	// Render the view
 	view.render('application/summary');

@@ -27,7 +27,7 @@ Application.add({
 		{ value: 'accepted', label: 'Accepted onto framework' },
 		{ value: 'failed', label: 'Application rejected' },
 	] },
-	products: { type: Types.Relationship, ref: 'Product', many: true },
+	//products: { type: Types.Relationship, ref: 'Product', many: true },
 });
 
 // virtuals

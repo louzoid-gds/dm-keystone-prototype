@@ -22,8 +22,9 @@ Attribute.add({
 		{ value: 'boolean', label: 'True/False' },
 		{ value: 'textArea', label: 'Textarea' },
 		{ value: 'radioOptions', label: 'Radio options' },
+		{ value: 'checkboxOptions', label: 'Checkbox options' },
 	] },
-	options: { type: Types.TextArray, dependsOn: { questionType: 'radioOptions' } },
+	options: { type: Types.TextArray, dependsOn: { questionType: ['radioOptions', 'checkboxOptions'] } },
 	// Todo: these should probably be split out into separate types as have differing needs
 	usage: { type: Types.Select, required: true, initial: true, options: [
 		{ value: 'productField', label: 'Product field' },
@@ -32,7 +33,7 @@ Attribute.add({
 		{ value: 'coreTermsField', label: 'Core terms field' },
 		{ value: 'applicationField', label: 'Framework application field' },
 	] },
-	description: { type: Types.Text, initial: false },
+	textAboveLabel: { type: Types.Markdown, initial: false },
 	placeholder: { type: Types.Text, initial: false },
 	note: { type: Types.Text, initial: false },
 	required: { type: Types.Boolean, default: false }, // lots more validation stuff needed

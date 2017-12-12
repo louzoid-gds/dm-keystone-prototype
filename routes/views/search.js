@@ -7,7 +7,7 @@ exports = module.exports = function (req, res) {
 	var view = new keystone.View(req, res);
 	var locals = res.locals;
 	locals.filters = {
-		cat: req.params.category
+		cat: req.params.category,
 	};
 
 	view.on('init', function (next) {
@@ -24,7 +24,7 @@ exports = module.exports = function (req, res) {
 	});
 
 	view.on('init', function (next) {
-		var q = Product.model.find().where('isLive', true);
+		var q = Product.model.find().where('status', 'live'); // again, service layer needed rather than logic here.  Stinky
 		q.where('categories').in([locals.category]);
 		q.exec(function (err, products) {
 			if (err) return res.err(err);

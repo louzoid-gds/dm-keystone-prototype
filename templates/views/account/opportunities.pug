@@ -12,7 +12,7 @@ block content
 				include _nav.pug
 		
 			.col-sm-8
-				p.lead To do: work out specialists data model 
+				//- p.lead To do: work out specialists data model 
 				-
 					var draft = [];
 					var open = [];
@@ -23,26 +23,40 @@ block content
 						else { draft.push(locals.opportunities[i]); }
 					}
 
-				if open.length > 0 
-					h3 Published and open requirements
-					each opp in open
-						a(href='/opportunity/update/summary/' + opp.id) 
-							h3= opp.title
-						p Published at #{moment(opp.publishedAt).format('DD/MM/YYYY')}.  Closing at: #{moment(opp.closesAt).format('DD/MM/YYYY')}
-						hr
+				ul(role='tablist').nav.nav-tabs
+					if draft.length > 0 
+						li(role='presentation', class='active')
+							a(href='#draft', aria-controls='draft', role='tab', data-toggle='tab') Draft requirements
+					if open.length > 0 
+						li(role='presentation')
+							a(href='#published', aria-controls='published', role='tab', data-toggle='tab') Published &amp; open requirements
+					if closed.length > 0 
+						li(role='presentation')
+							a(href='#closed', aria-controls='closed', role='tab', data-toggle='tab') Closed requirements
 
-				if draft.length > 0 
-					h3 Draft requirements
-					each opp in draft
-						a(href='/opportunity/update/summary/' + opp.id) 
-							h3= opp.title
-						p Created at #{moment(opp.createdAt).format('DD/MM/YYYY')}
-						hr
+				.tab-content
+					if draft.length > 0 
+						div(role='tabpanel', class='tab-pane active', id='draft')
+							//- h3 Draft requirements
+							each opp in draft
+								a(href='/opportunity/update/summary/' + opp.id) 
+									h3= opp.title
+								p Created at #{moment(opp.createdAt).format('DD/MM/YYYY')}
+								hr
+					if open.length > 0 
+						div(role='tabpanel', class='tab-pane', id='published')
+							//- h3 Published and open requirements	
+							each opp in open
+								a(href='/opportunity/update/summary/' + opp.id) 
+									h3= opp.title
+								p Published at #{moment(opp.publishedAt).format('DD/MM/YYYY')}.  Closing at: #{moment(opp.closesAt).format('DD/MM/YYYY')}
+								hr
 
-				if closed.length > 0 
-					h3 Closed requirements
-					each opp in closed
-						a(href='/opportunity/update/summary/' + opp.id) 
-							h3= opp.title
-						p Closed at: #{moment(opp.closesAt).format('DD/MM/YYYY')}
-						hr
+					if closed.length > 0 
+						div(role='tabpanel', class='tab-pane', id='closed')
+							//- h3 Closed requirements
+							each opp in closed
+								a(href='/opportunity/update/summary/' + opp.id) 
+									h3= opp.title
+								p Closed at: #{moment(opp.closesAt).format('DD/MM/YYYY')}
+								hr

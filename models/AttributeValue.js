@@ -16,6 +16,7 @@ var AttributeValue = new keystone.List('AttributeValue', {
 
 AttributeValue.add({
 	value: { type: Types.Text, initial: true },
+	valueTextArray: { type: Types.TextArray },
 	product: { type: Types.Relationship, ref: 'Product', initial: true },
 	opportunity: { type: Types.Relationship, ref: 'Opportunity', initial: true },
 	declaration: { type: Types.Relationship, ref: 'Declaration', initial: true },

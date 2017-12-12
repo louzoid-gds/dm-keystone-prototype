@@ -26,7 +26,8 @@ block content
 						strong #{locals.category.name}
 				hr
 				each pro in locals.products
-					h3= pro.name
+					h3
+						a(href='/catalogue/service/' + pro.id)= pro.name
 					p Supplier name here
 					p!= pro.shortDescription
 					hr
