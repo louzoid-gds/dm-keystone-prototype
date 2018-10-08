@@ -54,7 +54,7 @@ block content
 							a(href='/application/summary/' + app.id) Continue your application
 						p Deadline: #{moment(app.framework.closesForApplicationsAt).format('DD/MM/YYYY')}
 					else
-						p Closed for applications at #{moment(f.closesForApplicationsAt).format('DD/MM/YYYY')}
+						p Closed for applications at #{moment(app.framework.closesForApplicationsAt).format('DD/MM/YYYY')}
 						p Outcome: #{app.outcome}
 						p Links to framework agreement etc if relevant
 					hr

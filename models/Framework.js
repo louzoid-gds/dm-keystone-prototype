@@ -40,7 +40,7 @@ Framework.schema.virtual('isOpen').get(function () {
 Framework.schema.virtual('isComingSoon').get(function () {
 	var d = moment(this.openForApplicationsAt);
 	if (!d.isValid) return false;
-	return moment(Date.now()).isAfter(moment(this.openForApplicationsAt).subtract(30, 'days'));
+	return moment(Date.now()).isAfter(moment(this.openForApplicationsAt).subtract(30, 'days')) && !this.isClosed;
 });
 
 Framework.defaultSort = '-createdAt';

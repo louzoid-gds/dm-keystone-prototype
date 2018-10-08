@@ -18,6 +18,7 @@ Product.add({
 	shortDescription: { type: Types.Textarea },
 	description: { type: Types.Markdown, required: false },
 	price: { type: Types.Money, required: false },
+	// these are defo wrong! More thought needed about the service lifecycle
 	status: { type: Types.Select, required: true, default: 'draft', options: [
 		{ value: 'draft', label: 'Draft' },
 		{ value: 'complete', label: 'Complete' },
