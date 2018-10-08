@@ -17,17 +17,20 @@ Application.add({
 	framework: { type: Types.Relationship, ref: 'Framework', required: true, initial: true },
 	declaration: { type: Types.Relationship, ref: 'Declaration' },
 	// these statuses are probably wrong. Revisit.
+	// do we need a status? Perhaps replace with a 'DateSubmitted' timestamp?
 	status: { type: Types.Select, required: true, default: 'inProgress', options: [
 		{ value: 'inProgress', label: 'In Progress' },
-		{ value: 'complete', label: 'Complete' },
-		{ value: 'inReview', label: 'In Review' },
-		{ value: 'closed', label: 'Closed' },
+		{ value: 'submitted', label: 'Submitted' }, // once submitted, app can't be edited. Actor on submit = framework
+		// { value: 'complete', label: 'Complete' },
+		// { value: 'inReview', label: 'In Review' },
+		// { value: 'closed', label: 'Closed' },
 	] },
-	outcome: { type: Types.Select, options: [
-		{ value: 'accepted', label: 'Accepted onto framework' },
+	eventualOutcome: { type: Types.Select, options: [
+		{ value: 'accepted', label: 'Application accepted' },
 		{ value: 'failed', label: 'Application rejected' },
 	] },
-	//products: { type: Types.Relationship, ref: 'Product', many: true },
+	failureReason: { type: Types.Textarea },
+	// what about accepted reason? or other audit worthy info e.g. who approved?
 });
 
 // virtuals
